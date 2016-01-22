@@ -75,7 +75,7 @@ read -r -p  "[ ] Do you want to download, compile, and install aircrack? [y/n] "
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
    echo "[+] Installing required packages..."
-   apt-egt --force-yes --yes subversion libssl-dev libnl-genl-3-dev
+   apt-egt --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool rfkill
    echo "[+] Downloading aircrack-ng..."
    svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng   tar xzf aircrack-ng-1.2-beta1.tar.gz
    cd aircrack-ng
