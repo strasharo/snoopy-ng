@@ -10,7 +10,11 @@ rm -f /usr/bin/snoopy
 rm -f /usr/bin/snoopy_auth
 rm -f /etc/transforms
 
+echo "[+] Updating repository..."
+apt-get update
+
 apt-get install --force-yes --yes ntpdate
+
 #if ps aux | grep ntp | grep -qv grep; then 
 if [ -f /etc/init.d/ntp ]; then
 	/etc/init.d/ntp stop
@@ -29,12 +33,9 @@ dpkg-reconfigure -f noninteractive tzdata
 echo "[+] Installing sakis3g..."
 cp ./includes/sakis3g /usr/local/bin
 
-echo "[+] Updating repository..."
-apt-get update
-
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+apt-get install --force-yes --yes airmon-ng python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
 
