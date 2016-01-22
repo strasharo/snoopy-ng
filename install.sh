@@ -35,7 +35,7 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes airmon-ng python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
 
@@ -71,19 +71,21 @@ echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 
 # Only run this on your client, not server:
-#read -r -p  "[ ] Do you want to download, compile, and install aircrack? [y/n] " response
-#if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
-#then
-#    echo "[+] Downloading aircrack-ng..."
-#    wget http://download.aircrack-ng.org/aircrack-ng-1.2-beta1.tar.gz
-#    tar xzf aircrack-ng-1.2-beta1.tar.gz
-#    cd aircrack-ng-1.2-beta1
-#    make
-#    echo "[-] Installing aircrack-ng"
-#    make install
-#    cd ..
-#    rm -rf aircrack-ng-1.2-beta1*
-#fi
+read -r -p  "[ ] Do you want to download, compile, and install aircrack? [y/n] " response
+if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+   echo "[+] Installing required packages..."
+   apt-egt --force-yes --yes subversion libssl-dev libnl-genl-3-dev
+   echo "[+] Downloading aircrack-ng..."
+   svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng   tar xzf aircrack-ng-1.2-beta1.tar.gz
+   cd aircrack-ng
+   echo "[-] Making aircrack-ng"
+   make
+   echo "[-] Installing aircrack-ng"
+   make install
+   cd ../
+   rm -rf aircrack-ng
+fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
 
