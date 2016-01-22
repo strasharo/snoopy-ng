@@ -10,7 +10,7 @@ rm -f /usr/bin/snoopy
 rm -f /usr/bin/snoopy_auth
 rm -f /etc/transforms
 
-apt-get install ntpdate --force-yes --yes
+apt-get install --force-yes --yes ntpdate
 #if ps aux | grep ntp | grep -qv grep; then 
 if [ -f /etc/init.d/ntp ]; then
 	/etc/init.d/ntp stop
