@@ -3,8 +3,8 @@
 # glenn@sensepost.com // @glennzw
 # Todo: Make this an egg.
 
-if [ $EUID != 0 ]; then{
-   sudo "$0" "$@";
+if [ $EUID != 0 ]; then {
+   sudo bash "$0" "$@";
 } && {
    set -e
    # In case this is the seconds time user runs setup, remove prior symlinks:
