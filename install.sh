@@ -3,9 +3,9 @@
 # glenn@sensepost.com // @glennzw
 # Todo: Make this an egg.
 
-if [ $EUID != 0 ]; then {
-   sudo bash "$0" "$@";
-} && {
+#if [ $EUID != 0 ]; then {
+#   sudo bash "$0" "$@";
+#} && {
    set -e
    # In case this is the seconds time user runs setup, remove prior symlinks:
    sudo rm -f /usr/bin/sslstrip_snoopy
@@ -103,5 +103,5 @@ if [ $EUID != 0 ]; then {
 
    echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
    echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
-}
-fi
+#}
+#fi
