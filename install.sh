@@ -78,7 +78,7 @@
    if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
    then
       echo "[+] Installing required packages..."
-      sudo apt-get --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool rfkill
+      sudo apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool rfkill
       echo "[+] Downloading aircrack-ng..."
       svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng   tar xzf aircrack-ng-1.2-beta1.tar.gz
       cd aircrack-ng
