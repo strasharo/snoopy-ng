@@ -3,7 +3,7 @@
 # glenn@sensepost.com // @glennzw
 # Todo: Make this an egg.
 
-if [ $EUID != 0 ]; then {
+if [ $EUID != 0 ]; then
    echo "Please run this script as root.";
    exit;
 fi
