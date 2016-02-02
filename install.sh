@@ -74,7 +74,7 @@ pip install https://dpkt.googlecode.com/files/dpkt-1.8.tar.gz
 
 echo "[-] Removing default version of scapy..."
 apt-get remove -y --force-yes python-scapy
-pip uninstall scapy
+pip uninstall -y -q scapy
 
 echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
