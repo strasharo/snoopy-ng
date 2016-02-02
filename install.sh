@@ -88,6 +88,7 @@ then
    make
    echo "[-] Installing aircrack-ng"
    make install
+   airodump-ng-oui-update
    cd ../
    rm -rf aircrack-ng
 fi
