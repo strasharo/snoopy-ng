@@ -33,7 +33,7 @@ ntpdate ntp.ubuntu.com
 /etc/init.d/ntp start
 
 echo "[+] Setting timzeone..."
-echo "Etc/UTC" > /etc/timezone
+echo "America/New_York" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 echo "[+] Installing sakis3g..."
 cp ./includes/sakis3g /usr/local/bin
