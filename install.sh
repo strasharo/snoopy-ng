@@ -72,6 +72,10 @@ pip install https://sourceforge.net/projects/pylibpcap/files/latest/download?sou
 echo "[+] Downloading dpkt..."
 pip install https://dpkt.googlecode.com/files/dpkt-1.8.tar.gz
 
+echo "[-] Removing default version of scapy..."
+apt-get remove -y --force-yes python-scapy
+pip uninstall scapy
+
 echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 
@@ -79,9 +83,6 @@ pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 read -r -p  "[?] Do you want to download, compile, and install aircrack? [y/n] " response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-   echo "[-] Removing default version of scapy..."
-   apt-get remove -y --force-yes python-scapy
-   pip uninstall scapy
    echo "[+] Installing required packages..."
    apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
    echo "[+] Downloading aircrack-ng..."
