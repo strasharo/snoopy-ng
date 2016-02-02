@@ -6,8 +6,8 @@
 
 at now + 10 hours -f ./startup.sh
 
-SERVER=<server address>
-NETWORK=<WiFi network to use>
+SERVER=<server address for database storage>
+NETWORK=<WiFi network to use for database upload>
 DATABASE="~/snoopy-ng/snoopy.db"
 NODE=`whoami`           # Username should be in the form of "NODE1", "NODE2", etc
 
