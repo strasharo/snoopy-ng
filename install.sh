@@ -110,3 +110,4 @@ chmod +x /usr/bin/sslstrip_snoopy
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
+snoopy
