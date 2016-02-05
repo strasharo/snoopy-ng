@@ -6,13 +6,14 @@
 
 at now + 10 hours -f ./startup.sh
 
-SERVER=<server address for database storage>
-NETWORK=<WiFi network to use for database upload>
+SERVER="<server address for database storage>"
+NETWORK="<WiFi network to use for database upload>"
 DATABASE="~/snoopy-ng/snoopy.db"
-NODE=`whoami`           # Username should be in the form of "NODE1", "NODE2", etc
+NODE=`hostname`           # Hostname should be in the form of "NODE1", "NODE2", etc
 
-sudo kill /tmp/Snoopy/*.pid
-#sudo kill ./*.pid
+# Addition of 'SIGNINT' argument neccessary in order to trigger a safe suspend of the process
+#   -- Simulates a keyboard interrupt, triggering Snoopy's controlled shutdown procedure (storing data to the DB, etc)
+sudo kill -SIGINT /tmp/Snoopy/*.pid
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
@@ -20,10 +21,12 @@ IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan`;
 sudo ifconfig $IFACE up;
 
 sudo iwconfig $IFACE mode managed;
-sudo iwconfig $IFACE essid "${NETWORK}";
+# sudo iwconfig $IFACE essid "${NETWORK}";
 sudo dhclient $IFACE;
 
-COUNTER=1;
+# 'COUNTER' value is overset only during testing. Should be reduced to '1' for final deployment.
+let COUNTER=5;
+# let COUNTER=1;
 
 while [  $COUNTER -lt 4 ]; do
     if [ scp -P 7900 $DATABASE woodstock@"${SERVER}":/some/remote/directory -eq 0 ]; then
@@ -38,6 +41,12 @@ done
 if [ $COUNTER -eq 10 ]; then
     echo "Database synced successfully." tee -a ./Database.log
 else
+    filename=$(basename "$DATABASE");
+    ext="${filename##*.}";
+    filename="${filename%.*}";
+
     echo "Database failed to sync. Data will be maintained locally." tee -a ./Database.log
+    mv ./$DATABASE "$(dirname "$DATABASE")/${filename}_`date --date='-1 month' +%F@%T`.${ext}";
+fi
 
 sudo ifconfig $IFACE down;
