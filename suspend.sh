@@ -9,7 +9,8 @@ at now + 10 hours -f ./startup.sh
 SERVER="<server address for database storage>"
 NETWORK="<WiFi network to use for database upload>"
 DATABASE="~/snoopy-ng/snoopy.db"
-NODE=`hostname`           # Hostname should be in the form of "NODE1", "NODE2", etc
+DEVICE=`cat `pwd`/.DeviceName`
+LOCATION=`cat `pwd`/.DeviceLoc`
 
 # Addition of 'SIGNINT' argument neccessary in order to trigger a safe suspend of the process
 #   -- Simulates a keyboard interrupt, triggering Snoopy's controlled shutdown procedure (storing data to the DB, etc)
@@ -29,7 +30,7 @@ let COUNTER=5;
 # let COUNTER=1;
 
 while [  $COUNTER -lt 4 ]; do
-    if [ scp -P 7900 $DATABASE woodstock@"${SERVER}":/some/remote/directory -eq 0 ]; then
+    if [ scp -P 7900 $DATABASE woodstock@"${SERVER}":/snooopy/"$LOCATION"/"$DEVICE" -eq 0 ]; then
         rm $DATABASE;
         let COUNTER=10;
     else
