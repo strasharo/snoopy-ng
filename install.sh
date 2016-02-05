@@ -4,8 +4,19 @@
 # Todo: Make this an egg.
 
 if [[ $EUID != 0 ]]; then
-   echo "Please run this script as root.";
+   echo "Please run this script as root or with sudo ('sudo bash $0').";
    exit;
+fi
+
+if [ ! -f "./.DeviceName" ]; then
+   read -r -p  "[?] What is the name for this device? [default: \"woodstock\"] " device
+   echo "${device:=woodstock}" > `pwd`/.DeviceName
+fi
+
+if [ ! -f "./.DeviceLoc" ]; then
+   read -r -p  "[?] What is the location for this device? [default: \"test\"] " loc
+   loc="${loc:=woodstock}"
+   echo "$loc" > `pwd`/.DeviceLoc
 fi
 
 set -e
@@ -80,7 +91,9 @@ echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 
 # Only run this on your client, not server:
-read -r -p  "[?] Do you want to download, compile, and install aircrack? [y/n] " response
+read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
+response="${response:=yes}" # Default to 'yes'
+
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
    echo "[+] Installing required packages..."
@@ -110,4 +123,7 @@ chmod +x /usr/bin/sslstrip_snoopy
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
-snoopy
+
+# This is only intended for use in part of a class project.
+# Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
+echo "Accepted" > `pwd`/'.acceptedlicense'

@@ -4,10 +4,6 @@
 # Run with command:
 #    nohup bash ./startup.sh > /dev/null &
 
-alias LOCATION='Bedroom'
-
-mkdir /tmp/Snoopy/
-
 # Stop any existing interfaces (as a precaution)
 IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 sudo airmon-ng stop $IFACE;

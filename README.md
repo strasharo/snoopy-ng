@@ -12,7 +12,10 @@
                                             | $$      |  $$$$$$/
                                             |__/       \______/
                             
-                                                   Version: 2.0
+                                                   Version: 2.0.1
+
+    (modified by SamuelWN)
+    
     Code:    glenn@sensepost.com // @glennzw
     Visit:   www.sensepost.com // @sensepost
     License: Non-commercial use
