@@ -23,7 +23,7 @@ import datetime
 from includes.jsonify import objs_to_json
 from includes.fonts import *
 #Controlled shutdown
-import signal
+# import signal
 
 #Set path
 snoopyPath=os.path.dirname(os.path.realpath(__file__))
@@ -145,6 +145,8 @@ class Snoopy():
             time.sleep(1) #Delay between checking threads for new data
 
     def stop(self):
+        f = open('Runlog.out', 'w')
+        f.write('Stopping Snoopy\n')
         self.run = False
         for m in self.modules:
             m.stop()
