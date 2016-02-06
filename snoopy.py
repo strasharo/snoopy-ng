@@ -22,7 +22,8 @@ import includes.common as common
 import datetime
 from includes.jsonify import objs_to_json
 from includes.fonts import *
-
+#Controlled shutdown
+import signal
 
 #Set path
 snoopyPath=os.path.dirname(os.path.realpath(__file__))
@@ -55,6 +56,9 @@ class Snoopy():
     def __init__(self, _modules, dbms="sqlite:///snoopy.db",
                  server="http://localhost:9001/", drone="unnamedDrone",
                  key=None, location="unknownLocation", flush_local_data_after_sync=True, verbose=0):
+
+        signal.signal(signal.SIGABRT, self.stop())
+        
         #local data
         self.all_data = {}
         self.run = True
@@ -327,12 +331,17 @@ before continuing.
     #parser.add_option("-v", "--verbose", dest="verbose", action="store_true", help="Output information about new data.", default=False)
     parser.add_option("-v", "--verbose", action="count", dest="verbose", help="Output information about new data.", default=0)
     parser.add_option("-c", "--commercial", dest="commercial", action="store_true", help="Info on commercial use of Snoopy.", default=False)
+    parser.add_option("-q", "--stop", dest="stop", action="store_false", help="Run the safe shutdown procedure (useful for non-interactive runs).", default=False)
 
     options, args = parser.parse_args()
 
     if options.ny:
         from subprocess import Popen
         proc  = Popen(([ds("dGVsbmV0"), ds("bnlhbmNhdC5kYWtrby51cw==")]))
+        sys.exit(0)
+
+    if options.stop:
+        self.stop()
         sys.exit(0)
 
     if options.commercial:
