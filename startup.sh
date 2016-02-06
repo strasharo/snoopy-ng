@@ -8,5 +8,5 @@ sudo ifconfig $IFACE down;
 
 mkdir -p /tmp/Snoopy/
 
-nohup bash `pwd`/monitor_mode.sh    > /dev/null &
-nohup bash `pwd`/start_snooping.sh  > /dev/null &
+bash "$PWD/monitor_mode.sh" &
+bash "$PWD/start_snooping.sh" &

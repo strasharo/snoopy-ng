@@ -14,7 +14,7 @@ LOCATION=`cat `pwd`/.DeviceLoc`
 
 # Addition of 'SIGNINT' argument neccessary in order to trigger a safe suspend of the process
 #   -- Simulates a keyboard interrupt, triggering Snoopy's controlled shutdown procedure (storing data to the DB, etc)
-sudo kill -SIGABRT `cat /tmp/Snoopy/*.pid`
+sudo kill -SIGNINT `cat /tmp/Snoopy/*.pid`
 
 ps -aux | grep snoopy | grep -v python | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g'
 
