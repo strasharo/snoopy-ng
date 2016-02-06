@@ -3,6 +3,29 @@
 # glenn@sensepost.com // @glennzw
 # Todo: Make this an egg.
 
+# if [ $# -gt 0 ] && [[ $1 =~ ^([--][hH][eE][lL][pP]|[-][hH][eE][lL][pP]|[-][hH]|[-][-][hH]|[hH]|[?]|[-][?]) ]]; then
+if [ $# -gt 0 ] && [[ $1 =~ ^([-]*[h?][eE]?[lL]?[pP]?) ]]; then
+    echo " ___  _  _  _____  _____  ____  _  _"
+    echo "/ __)( \( )(  _  )(  _  )(  _ \( \/ )"
+    echo "\__ \ )  (  )(_)(  )(_)(  )___/ \  /"
+    echo "(___/(_)\_)(_____)(_____)(__)   (__)"
+    echo
+    echo "About:"
+    echo -e "    This script installs Snoopy and its dependencies.\n"
+    echo "Usage:"
+    echo "    Help:"
+    echo "        bash install -h "
+    echo -e "            Display this message\n"
+    echo "    Interactive:"
+    echo -e "        sudo bash install.sh\n"
+    echo "    Automated:"
+    echo "        sudo bash install.sh -c"
+    echo -e "            Install Aircrack-ng (for client use)\n"
+    echo "        sudo bash install.sh -s"
+    echo -e "            Don't install Aircrack-ng (for server use)\n"
+    exit;
+fi
+
 if [[ $EUID != 0 ]]; then
    echo "Please run this script as root or with sudo ('sudo bash $0').";
    exit;
@@ -91,8 +114,17 @@ echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 
 # Only run this on your client, not server:
-read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
-response="${response:=yes}" # Default to 'yes'
+if [ $# -eq 0 ]; then
+    read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
+    response="${response:=yes}" # Default to 'yes'
+elif [[ $1 == "-c" ]]
+    response="yes";
+elif [[ $1 == "-s" ]]
+    response="no";
+else
+    read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
+    response="${response:=yes}" # Default to 'yes'
+fi
 
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -120,6 +152,11 @@ ln -s `pwd`/includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
+chmod +x `pwd`/monitor_mode.sh
+chmod +x `pwd`/start_snoopying.sh
+chmod +x `pwd`/startup.sh
+chmod +x `pwd`/suspend.sh
+
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
