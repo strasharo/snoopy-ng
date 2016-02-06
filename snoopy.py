@@ -47,7 +47,6 @@ console.setLevel(logging.INFO)
 console.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
 logging.getLogger('').addHandler(console)
 
-signal.signal(signal.SIGHUP, Snoopy.stop())
 
 class Snoopy():
     SYNC_FREQ = 5 #Sync every 5 seconds
@@ -89,6 +88,8 @@ class Snoopy():
             if not self.db.dialect.has_table(self.db.connect(), tbl.name):
                 tbl.create()
 
+        signal.signal(signal.SIGUSR1, self.signal_handler)
+    
         try:
             self._load_modules(_modules)
             self.go()
@@ -142,6 +143,12 @@ class Snoopy():
                 if self.server != "local":
                     self.sync_to_server()
             time.sleep(1) #Delay between checking threads for new data
+
+    def signal_handler(self, signum, stack):
+        print "Caught signal.\n\tStopping Snoopy..."
+        self.stop()
+        print "Exiting..."
+        sys.exit(0)
 
     def stop(self):
         f = open('Runlog.out', 'w')
@@ -264,7 +271,8 @@ class Snoopy():
         #    return False
 
 def main():
-    message = """ ___  _  _  _____  _____  ____  _  _
+    message = """
+ ___  _  _  _____  _____  ____  _  _
 / __)( \( )(  _  )(  _  )(  _ \( \/ )
 \__ \ )  (  )(_)(  )(_)(  )___/ \  /
 (___/(_)\_)(_____)(_____)(__)   (__)
@@ -431,8 +439,14 @@ you'd like to engage with us.""" % (GR,G)
         newplugs.append({'name':'plugins.'+name, 'params':params})
     if options.sync_server == "local":
         logging.info("Capturing local only. Saving to '%s'" % options.dbms)
-    Snoopy(newplugs, options.dbms, options.sync_server, options.drone,
+    SNOOP=Snoopy(newplugs, options.dbms, options.sync_server, options.drone,
            options.key, options.location, options.flush, options.verbose)
+    
+    signal.signal(signal.SIGUSR1, SNOOP.signal_handler)
+    # signal.signal(signal.SIGHUP, SNOOP.receive_sighup)
+
+    # def receive_sighup(self, signum, stack):
+    #     Snoopy.stop()
 
 if __name__ == "__main__":
     main()

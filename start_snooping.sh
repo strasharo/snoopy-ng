@@ -2,14 +2,14 @@
 # This script starts Snoopy
 #
 # Run with command:
-#    nohup bash ./start_snoopy.sh > /dev/null &
+#    sudo bash ./start_snoopy.sh > /dev/null &
 
 DEV_NAME=""
 DEV_LOC=""
 
 if [ ! -f "$PWD/.DeviceName" ]; then
     echo "ERROR!"
-    echo "Please make sure that the file '`pwd`/.DeviceName' exists and contains a meaningful name for this device."
+    echo "Please make sure that the file '$PWD/.DeviceName' exists and contains a meaningful name for this device."
     exit;
 else
     DEV_NAME=`cat "$PWD/.DeviceName"`;
@@ -17,7 +17,7 @@ fi
 
 if [ ! -f "$PWD/.DeviceLoc" ]; then
     echo "ERROR!"
-    echo "Please make sure that the file '`pwd`/.DeviceLoc' exists and contains a meaningful location for this device."
+    echo "Please make sure that the file '$PWD/.DeviceLoc' exists and contains a meaningful location for this device."
     exit;
 else
     DEV_LOC=`cat "$PWD/.DeviceLoc"`;

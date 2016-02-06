@@ -12,11 +12,13 @@ DATABASE="~/snoopy-ng/snoopy.db"
 DEVICE=`cat `pwd`/.DeviceName`
 LOCATION=`cat `pwd`/.DeviceLoc`
 
-# Addition of 'SIGNINT' argument neccessary in order to trigger a safe suspend of the process
-#   -- Simulates a keyboard interrupt, triggering Snoopy's controlled shutdown procedure (storing data to the DB, etc)
-sudo kill -SIGNINT `cat /tmp/Snoopy/*.pid`
-
-ps -aux | grep snoopy | grep -v python | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g'
+# 'USR1' argument triggers custom signal handler script, allowing for a safe shutdown of the Snoopy process
+#       This ensures that data is properly stored in the database and modules are properly shutdown.
+sudo kill -USR1 `cat /tmp/Snoopy/Snoopy.pid`
+sudo kill -KILL `cat /tmp/Snoopy/Airodump.pid`
+# function PIDS {
+#     ps -aux | grep snoopy | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g'
+# }
 
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
