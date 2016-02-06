@@ -1,10 +1,10 @@
 #!/bin/bash
-# This script puts the wireless interface in managed mode, 
-#   connects to the WiFi network, transfers the logfile to the remote server, 
+# This script puts the wireless interface in managed mode,
+#   connects to the WiFi network, transfers the logfile to the remote server,
 #   and suspends the device.
 # Make sure to disable wireless in the nm-applet first.
 
-at now + 10 hours -f ./startup.sh
+at now +10 hours -f ./startup.sh
 
 SERVER="<server address for database storage>"
 NETWORK="<WiFi network to use for database upload>"
@@ -14,7 +14,10 @@ LOCATION=`cat `pwd`/.DeviceLoc`
 
 # Addition of 'SIGNINT' argument neccessary in order to trigger a safe suspend of the process
 #   -- Simulates a keyboard interrupt, triggering Snoopy's controlled shutdown procedure (storing data to the DB, etc)
-sudo kill -SIGINT /tmp/Snoopy/*.pid
+sudo kill -SIGABRT `cat /tmp/Snoopy/*.pid`
+
+ps -aux | grep snoopy | grep -v python | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g'
+
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
