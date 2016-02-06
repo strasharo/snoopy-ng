@@ -57,7 +57,7 @@ class Snoopy():
                  server="http://localhost:9001/", drone="unnamedDrone",
                  key=None, location="unknownLocation", flush_local_data_after_sync=True, verbose=0):
 
-        signal.signal(signal.SIGABRT, self.stop())
+        # signal.signal(signal.SIGABRT, self.stop())
         
         #local data
         self.all_data = {}
