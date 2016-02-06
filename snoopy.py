@@ -23,7 +23,7 @@ import datetime
 from includes.jsonify import objs_to_json
 from includes.fonts import *
 #Controlled shutdown
-# import signal
+import signal
 
 #Set path
 snoopyPath=os.path.dirname(os.path.realpath(__file__))
@@ -47,6 +47,7 @@ console.setLevel(logging.INFO)
 console.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
 logging.getLogger('').addHandler(console)
 
+signal.signal(signal.SIGHUP, Snoopy.stop())
 
 class Snoopy():
     SYNC_FREQ = 5 #Sync every 5 seconds
@@ -56,8 +57,6 @@ class Snoopy():
     def __init__(self, _modules, dbms="sqlite:///snoopy.db",
                  server="http://localhost:9001/", drone="unnamedDrone",
                  key=None, location="unknownLocation", flush_local_data_after_sync=True, verbose=0):
-
-        # signal.signal(signal.SIGABRT, self.stop())
         
         #local data
         self.all_data = {}
