@@ -164,4 +164,4 @@ echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when usin
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > "$(dirname "$0")"/'.acceptedlicense'
+echo "Accepted" > ./'.acceptedlicense'

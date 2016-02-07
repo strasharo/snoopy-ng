@@ -27,3 +27,4 @@ IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
 sudo snoopy -v -m wifi:iface=$IFACE -m sysinfo -m heartbeat -d $DEV_NAME -l "$DEV_LOC" &  echo $! > /tmp/Snoopy/Snoopy.pid
 # sudo snoopy -v -m wifi:mon=true -m sysinfo -m heartbeat -d "$DEV_NAME" -l "$DEV_LOC" &  echo $! > /tmp/Snoopy/Snoopy.pid
+# airodump &  echo $! > /tmp/Snoopy/Snoopy.pid

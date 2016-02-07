@@ -146,9 +146,18 @@ class Snoopy():
 
     def signal_handler(self, signum, stack):
         print "Caught signal.\n\tStopping Snoopy..."
-        self.stop()
+
+        f = open('Runlog.out', 'w')
+        f.write('Stopping Snoopy\n')
+        self.run = False
+        for m in self.modules:
+            m.stop()
+        self.write_local_db()
+        if self.server != "local":
+            self.sync_to_server()
+
         print "Exiting..."
-        sys.exit(0)
+        # sys.exit(0)
 
     def stop(self):
         f = open('Runlog.out', 'w')
@@ -439,10 +448,12 @@ you'd like to engage with us.""" % (GR,G)
         newplugs.append({'name':'plugins.'+name, 'params':params})
     if options.sync_server == "local":
         logging.info("Capturing local only. Saving to '%s'" % options.dbms)
-    SNOOP=Snoopy(newplugs, options.dbms, options.sync_server, options.drone,
+    # Snoopy(newplugs, options.dbms, options.sync_server, options.drone,
+           # options.key, options.location, options.flush, options.verbose)
+    Snoopy(newplugs, options.dbms, options.sync_server, options.drone,
            options.key, options.location, options.flush, options.verbose)
     
-    signal.signal(signal.SIGUSR1, SNOOP.signal_handler)
+    # signal.signal(signal.SIGUSR1, SNOOP.signal_handler)
     # signal.signal(signal.SIGHUP, SNOOP.receive_sighup)
 
     # def receive_sighup(self, signum, stack):

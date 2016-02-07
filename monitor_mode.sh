@@ -2,11 +2,13 @@
 # This script puts the wireless interface in monitor mode
 #
 # Run with command:
-#    nohup bash ./startup.sh > /dev/null &
+#    nohup bash ./monitor_mode.sh > /dev/null &
 
 # Stop any existing interfaces (as a precaution)
 IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
-sudo airmon-ng stop $IFACE;
+if ! [ -z "$IFACE" ]; then
+    sudo airmon-ng stop $IFACE;
+fi
 
 IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan`;
 sudo airmon-ng check kill;

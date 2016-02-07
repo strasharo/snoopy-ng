@@ -19,7 +19,7 @@ AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!
 #       This ensures that data is properly stored in the database and modules are properly shutdown.
 sudo kill -USR1 `cat /tmp/Snoopy/Snoopy.pid` $SNOOP
 sudo kill -KILL `cat /tmp/Snoopy/Airodump.pid`
-sudo kill -KILL $AIRNG $SNOOP
+sudo kill -KILL $AIRNG #$SNOOP
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
