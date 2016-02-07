@@ -9,17 +9,17 @@ at now +10 hours -f ./startup.sh
 SERVER="<server address for database storage>"
 NETWORK="<WiFi network to use for database upload>"
 DATABASE="~/snoopy-ng/snoopy.db"
-DEVICE=`cat `pwd`/.DeviceName`
-LOCATION=`cat `pwd`/.DeviceLoc`
+DEVICE=`cat ./.DeviceName`
+LOCATION=`cat ./.DeviceLoc`
+
+SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
+AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 
 # 'USR1' argument triggers custom signal handler script, allowing for a safe shutdown of the Snoopy process
 #       This ensures that data is properly stored in the database and modules are properly shutdown.
-sudo kill -USR1 `cat /tmp/Snoopy/Snoopy.pid`
+sudo kill -USR1 `cat /tmp/Snoopy/Snoopy.pid` $SNOOP
 sudo kill -KILL `cat /tmp/Snoopy/Airodump.pid`
-# function PIDS {
-#     ps -aux | grep snoopy | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g'
-# }
-
+sudo kill -KILL $AIRNG $SNOOP
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
@@ -45,14 +45,15 @@ while [  $COUNTER -lt 4 ]; do
 done
 
 if [ $COUNTER -eq 10 ]; then
-    echo "Database synced successfully." tee -a ./Database.log
+    echo "Database synced successfully." | tee -a ./Database.log
 else
     filename=$(basename "$DATABASE");
     ext="${filename##*.}";
     filename="${filename%.*}";
 
-    echo "Database failed to sync. Data will be maintained locally." tee -a ./Database.log
-    mv ./$DATABASE "$(dirname "$DATABASE")/${filename}_`date --date='-1 month' +%F@%T`.${ext}";
+    NOW=$(date --date='-1 month' +%F@%T);
+    echo "[${NOW}] :: Database failed to sync. Data will be maintained locally." | tee -a ./Database.log
+    mv ./$DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
 fi
 
 sudo ifconfig $IFACE down;
