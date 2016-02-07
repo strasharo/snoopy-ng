@@ -3,7 +3,6 @@
 # glenn@sensepost.com // @glennzw
 # Todo: Make this an egg.
 
-# if [ $# -gt 0 ] && [[ $1 =~ ^([--][hH][eE][lL][pP]|[-][hH][eE][lL][pP]|[-][hH]|[-][-][hH]|[hH]|[?]|[-][?]) ]]; then
 if [ $# -gt 0 ] && [[ $1 =~ ^([-]*[h?][eE]?[lL]?[pP]?) ]]; then
     echo " ___  _  _  _____  _____  ____  _  _"
     echo "/ __)( \( )(  _  )(  _  )(  _ \( \/ )"
@@ -14,7 +13,7 @@ if [ $# -gt 0 ] && [[ $1 =~ ^([-]*[h?][eE]?[lL]?[pP]?) ]]; then
     echo -e "    This script installs Snoopy and its dependencies.\n"
     echo "Usage:"
     echo "    Help:"
-    echo "        bash install -h "
+    echo "        bash install -h"
     echo -e "            Display this message\n"
     echo "    Interactive:"
     echo -e "        sudo bash install.sh\n"
@@ -33,13 +32,13 @@ fi
 
 if [ ! -f "./.DeviceName" ]; then
    read -r -p  "[?] What is the name for this device? [default: \"woodstock\"] " device
-   echo "${device:=woodstock}" > `pwd`/.DeviceName
+   echo "${device:=woodstock}" > "$(dirname "$0")"/.DeviceName
 fi
 
 if [ ! -f "./.DeviceLoc" ]; then
    read -r -p  "[?] What is the location for this device? [default: \"test\"] " loc
    loc="${loc:=woodstock}"
-   echo "$loc" > `pwd`/.DeviceLoc
+   echo "$loc" > "$(dirname "$0")"/.DeviceLoc
 fi
 
 set -e
@@ -144,18 +143,20 @@ fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
 
-echo "sqlite:///`pwd`/snoopy.db" > ./transforms/db_path.conf
+DIR="$(dirname "$0")"
 
-ln -s `pwd`/transforms /etc/transforms
-ln -s `pwd`/snoopy.py /usr/bin/snoopy
-ln -s `pwd`/includes/auth_handler.py /usr/bin/snoopy_auth
+echo "sqlite:///$DIR/snoopy.db" > ./transforms/db_path.conf
+
+ln -s /transforms /etc/transforms
+ln -s "$DIR/snoopy.py" /usr/bin/snoopy
+ln -s "$DIR/includes/auth_handler.py" /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-chmod +x `pwd`/monitor_mode.sh
-chmod +x `pwd`/start_snoopying.sh
-chmod +x `pwd`/startup.sh
-chmod +x `pwd`/suspend.sh
+chmod +x "$DIR/monitor_mode.sh"
+chmod +x "$DIR/start_snoopying.sh"
+chmod +x "$DIR/startup.sh"
+chmod +x "$DIR/suspend.sh"
 
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
@@ -163,4 +164,4 @@ echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when usin
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > `pwd`/'.acceptedlicense'
+echo "Accepted" > "$(dirname "$0")"/'.acceptedlicense'
