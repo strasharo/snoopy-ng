@@ -103,7 +103,7 @@ echo "[+] Downloading pylibpcap..."
 pip install https://sourceforge.net/projects/pylibpcap/files/latest/download?source=files#egg=pylibpcap
 
 echo "[+] Downloading dpkt..."
-pip install https://dpkt.googlecode.com/files/dpkt-1.8.tar.gz
+pip install dpkt
 
 echo "[-] Removing default version of scapy..."
 apt-get remove -y --force-yes python-scapy
@@ -116,9 +116,9 @@ pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 if [ $# -eq 0 ]; then
     read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
     response="${response:=yes}" # Default to 'yes'
-elif [[ $1 == "-c" ]]
+elif [[ $1 == "-c" ]]; then
     response="yes";
-elif [[ $1 == "-s" ]]
+elif [[ $1 == "-s" ]]; then
     response="no";
 else
     read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
