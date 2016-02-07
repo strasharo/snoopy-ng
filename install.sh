@@ -107,7 +107,9 @@ pip install dpkt
 
 echo "[-] Removing default version of scapy..."
 apt-get remove -y --force-yes python-scapy
-pip uninstall -y -q scapy
+if ! [ -z "$(pip list | grep "scapy")" ]; then 
+  pip uninstall -y -q scapy;
+fi
 
 echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
@@ -164,4 +166,4 @@ echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when usin
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > ./'.acceptedlicense'
+echo "Accepted" > "$DIR/'.acceptedlicense'"
