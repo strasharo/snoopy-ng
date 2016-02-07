@@ -53,7 +53,7 @@ else
 
     NOW=$(date --date='-1 month' +%F@%T);
     echo "[${NOW}] :: Database failed to sync. Data will be maintained locally." | tee -a ./Database.log
-    mv ./$DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
+    mv $DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
 fi
 
 sudo ifconfig $IFACE down;
