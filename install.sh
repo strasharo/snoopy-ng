@@ -32,13 +32,13 @@ fi
 
 if [ ! -f "./.DeviceName" ]; then
    read -r -p  "[?] What is the name for this device? [default: \"woodstock\"] " device
-   echo "${device:=woodstock}" > "$(dirname "$0")"/.DeviceName
+   # echo "${device:=woodstock}" > "$(dirname "$0")/.DeviceName"
 fi
 
 if [ ! -f "./.DeviceLoc" ]; then
    read -r -p  "[?] What is the location for this device? [default: \"test\"] " loc
-   loc="${loc:=woodstock}"
-   echo "$loc" > "$(dirname "$0")"/.DeviceLoc
+   loc="${loc:=test}"
+   echo "$loc" > "$(dirname "$0")/.DeviceLoc"
 fi
 
 set -e
@@ -145,13 +145,13 @@ fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
 
-DIR="$(dirname "$0")"
+# DIR="$(dirname "$0")"
 
 echo "sqlite:///$DIR/snoopy.db" > ./transforms/db_path.conf
 
-ln -s /transforms /etc/transforms
-ln -s ./snoopy.py /usr/bin/snoopy
-ln -s ./includes/auth_handler.py /usr/bin/snoopy_auth
+ln -s `pwd`/transforms /etc/transforms
+ln -s `pwd`/snoopy.py /usr/bin/snoopy
+ln -s `pwd`/includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
