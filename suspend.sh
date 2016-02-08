@@ -20,7 +20,7 @@ LOCATION=`cat ./.DeviceLoc`
 # sudo kill -HUP $(cat /tmp/Snoopy/Snoopy.pid)
 touch /tmp/Snoopy/STOP_SNIFFING
 #Give sub-processes a chance to clean things up...
-sleep 5m 
+sleep 1m 
 SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 sudo kill -KILL $(cat /tmp/Snoopy/Airodump.pid)
@@ -60,5 +60,7 @@ else
     echo "[${NOW}] :: Database failed to sync. Data will be maintained locally." | tee -a ./Database.log
     mv $DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
 fi
+
+sudo rm -f /tmp/Snoopy/*
 
 sudo ifconfig $IFACE down;
