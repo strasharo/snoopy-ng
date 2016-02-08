@@ -89,6 +89,7 @@ class Snoopy():
                 tbl.create()
 
         signal.signal(signal.SIGUSR1, self.signal_handler)
+        signal.signal(signal.SIGHUP, self.signal_handler)
     
         try:
             self._load_modules(_modules)
