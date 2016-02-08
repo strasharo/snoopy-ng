@@ -150,15 +150,15 @@ DIR="$(dirname "$0")"
 echo "sqlite:///$DIR/snoopy.db" > ./transforms/db_path.conf
 
 ln -s /transforms /etc/transforms
-ln -s "$DIR/snoopy.py" /usr/bin/snoopy
-ln -s "$DIR/includes/auth_handler.py" /usr/bin/snoopy_auth
+ln -s ./snoopy.py /usr/bin/snoopy
+ln -s ./includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-chmod +x "$DIR/monitor_mode.sh"
-chmod +x "$DIR/start_snoopying.sh"
-chmod +x "$DIR/startup.sh"
-chmod +x "$DIR/suspend.sh"
+chmod +x ./monitor_mode.sh
+chmod +x ./start_snooping.sh
+chmod +x ./startup.sh
+chmod +x ./suspend.sh
 
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
@@ -166,4 +166,4 @@ echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when usin
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > "$DIR/'.acceptedlicense'"
+echo "Accepted" > ./.acceptedlicense
