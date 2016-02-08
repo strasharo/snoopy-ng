@@ -98,6 +98,8 @@ class Snoopy():
             print "Caught Ctrl+C! Saving data and shutting down..."
             self.stop()
 
+        self.stop()
+
     def _load_modules(self, modules_to_load):
         str_p = json.dumps(modules_to_load)
         self.modules = []
@@ -144,6 +146,9 @@ class Snoopy():
                 if self.server != "local":
                     self.sync_to_server()
             time.sleep(1) #Delay between checking threads for new data
+            if os.path.exists("/tmp/Snoopy/STOP_SNIFFING"):
+                self.run = False
+
 
     def signal_handler(self, signum, stack):
         print "Caught signal.\n\tStopping Snoopy..."

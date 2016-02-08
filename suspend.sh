@@ -13,14 +13,18 @@ DATABASE="./snoopy.db"
 DEVICE=`cat ./.DeviceName`
 LOCATION=`cat ./.DeviceLoc`
 
-# SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
-AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 
 # 'USR1' argument triggers custom signal handler script, allowing for a safe shutdown of the Snoopy process
 #       This ensures that data is properly stored in the database and modules are properly shutdown.
-sudo kill -USR1 $(cat /tmp/Snoopy/Snoopy.pid)
+#sudo kill -USR1 $(cat /tmp/Snoopy/Snoopy.pid)
+# sudo kill -HUP $(cat /tmp/Snoopy/Snoopy.pid)
+touch /tmp/Snoopy/STOP_SNIFFING
+#Give sub-processes a chance to clean things up...
+sleep 5m 
+SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
+AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 sudo kill -KILL $(cat /tmp/Snoopy/Airodump.pid)
-sudo kill -KILL $AIRNG #$SNOOP
+sudo kill -KILL $AIRNG $SNOOP
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
@@ -36,7 +40,7 @@ let COUNTER=5;
 # let COUNTER=1;
 
 while [  $COUNTER -lt 4 ]; do
-    if [ scp $DATABASE "${USER}"@"${SERVER}":"/home/${USER}/${LOCATION}"/"${DEVICE}" -eq 0 ]; then
+    if [ scp $DATABASE "${USER}@${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
         rm $DATABASE;
         let COUNTER=10;
     else
