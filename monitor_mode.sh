@@ -16,4 +16,4 @@ sudo airmon-ng start $IFACE;
 
 IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
-sudo airodump-ng $IFACE & sudo echo $! > /tmp/Snoopy/Airodump.pid
+sudo airodump-ng $IFACE & echo $! > /tmp/Snoopy/Airodump.pid

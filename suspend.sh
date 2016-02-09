@@ -13,17 +13,17 @@ DATABASE="./snoopy.db"
 DEVICE=`cat ./.DeviceName`
 LOCATION=`cat ./.DeviceLoc`
 
-
-# 'USR1' argument triggers custom signal handler script, allowing for a safe shutdown of the Snoopy process
-#       This ensures that data is properly stored in the database and modules are properly shutdown.
-#sudo kill -USR1 $(cat /tmp/Snoopy/Snoopy.pid)
-# sudo kill -HUP $(cat /tmp/Snoopy/Snoopy.pid)
+# This triggers soft shutdown procedure
 touch /tmp/Snoopy/STOP_SNIFFING
-#Give sub-processes a chance to clean things up...
+
+# Give sub-processes a chance to clean things up...
 sleep 1m 
+
+sudo kill -KILL $(cat /tmp/Snoopy/Airodump.pid)
+
+# Any straggling processes:
 SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
-sudo kill -KILL $(cat /tmp/Snoopy/Airodump.pid)
 sudo kill -KILL $AIRNG $SNOOP
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
@@ -35,7 +35,7 @@ sudo iwconfig $IFACE mode managed;
 # sudo iwconfig $IFACE essid "${NETWORK}";
 sudo dhclient $IFACE;
 
-# 'COUNTER' value is overset only during testing. Should be reduced to '1' for final deployment.
+# 'COUNTER' value is overset only during testing. (Should be reduced to '1' for final deployment.)
 let COUNTER=5;
 # let COUNTER=1;
 
