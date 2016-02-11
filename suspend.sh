@@ -6,7 +6,7 @@
 # Make sure to disable wireless in the nm-applet first.
 
 RET_DIR="$PWD";
-cd $SNOOP_DIR
+cd $SNOOP_DIR;
 
 at now +10 hours -f ./startup.sh
 
@@ -28,7 +28,7 @@ sudo kill -KILL $(cat /tmp/Snoopy/Airodump.pid)
 # Any straggling processes:
 SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
-sudo kill -KILL $AIRNG $SNOOP
+sudo kill -s KILL $AIRNG $SNOOP
 
 sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
 
