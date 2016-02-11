@@ -36,13 +36,41 @@ cd $SNOOP_DIR;
 
 if [ ! -f "./.DeviceName" ]; then
    read -r -p  "[?] What is the name for this device? [default: \"woodstock\"] " device
-   # echo "${device:=woodstock}" > "$(dirname "$0")/.DeviceName"
+   echo "${device:=woodstock}" > "$SNOOP_DIR/.DeviceName"
 fi
 
 if [ ! -f "./.DeviceLoc" ]; then
    read -r -p  "[?] What is the location for this device? [default: \"test\"] " loc
-   loc="${loc:=test}"
-   echo "$loc" > "$(dirname "$0")/.DeviceLoc"
+   echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
+fi
+
+echo "Please Note:"
+echo -e "\tIf you wish to use Wigle, your login info is stored in these files:"
+echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_DIR/.WigleEmail\"."
+echo -e "\tYou can create or modify these at any time. All must be present in order for 'StartSnooping' to launch using the Wigle module."
+
+if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ]; then
+    read -r -p  "[?] What is your Wigle username? [optional] " WigUser
+    if [ $WigUser ]; then
+      echo "$WigUser" > "$SNOOP_DIR/.WigleUser";
+      read -r -p  "[?] What is your Wigle password? [optional] " WigPass
+      if [ $WigUser ]; then
+        echo "$WigPass" > "$SNOOP_DIR/.WiglePass";
+        if [ $WigPass ]; then
+          read -r -p  "[?] What is your Wigle email? [optional] " WigEm
+          if [ $WigEm ]; then
+              echo "$WigEm" > "$SNOOP_DIR/.WigleEmail";
+          else 
+            echo "Error, no email entered. Credentials will not be stored at this time."
+            rm ./.WigleUser
+            rm ./.WiglePass
+          fi
+        else
+         echo "Error, no password entered. Credentials will not be stored at this time."
+         rm ./.WigleUser
+       fi
+      fi
+    fi
 fi
 
 set -e
@@ -148,7 +176,6 @@ then
 fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
-
 echo "sqlite:///$SNOOP_DIR/snoopy.db" > ./transforms/db_path.conf
 
 ln -s $SNOOP_DIR/transforms /etc/transforms

@@ -9,4 +9,8 @@ at 10 PM -f "$PWD/suspend.sh"         > /dev/null &
 mkdir -p /tmp/Snoopy/
 
 sudo bash "$SNOOP_DIR/monitor_mode.sh" > ./monitor.out &
+
+# Give monitor mode a chance to initailize
+sleep 15;
+
 sudo bash "$SNOOP_DIR/start_snooping.sh" > ./snooping.out&
