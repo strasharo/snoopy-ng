@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script puts the wireless interface in monitor mode and starts Snoopy
 
-at 10 PM -f "$PWD/suspend.sh"         > /dev/null &
+at 10 PM -f "$SNOOP_DIR/suspend.sh"         > /dev/null &
 
 # IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan`;
 # sudo ifconfig $IFACE down;
