@@ -93,7 +93,10 @@ class Snoopy():
     
         try:
             self._load_modules(_modules)
-            self.go()
+            if self.server == "local":
+               self.go_local()
+            else: 
+                self.go_remote()
         except KeyboardInterrupt:
             print "Caught Ctrl+C! Saving data and shutting down..."
             self.stop()
@@ -134,7 +137,15 @@ class Snoopy():
 
         logging.info("Done loading plugins, running...")
 
-    def go(self):
+    def go_local(self):
+        while self.run:
+            self.get_data()
+            self.write_local_db()
+            time.sleep(20) #Delay between checking threads for new data
+            if os.path.exists("/tmp/Snoopy/STOP_SNIFFING"):
+                self.run = False
+
+    def go_remote(self):
         last_update = 0
         while self.run:
             self.get_data()
@@ -143,9 +154,8 @@ class Snoopy():
             now = int(os.times()[4])
             if abs(now - last_update) > self.SYNC_FREQ:
                 last_update = now
-                if self.server != "local":
-                    self.sync_to_server()
-            time.sleep(1) #Delay between checking threads for new data
+                self.sync_to_server()
+            time.sleep(5) #Delay between checking threads for new data
             if os.path.exists("/tmp/Snoopy/STOP_SNIFFING"):
                 self.run = False
 
@@ -153,8 +163,6 @@ class Snoopy():
     def signal_handler(self, signum, stack):
         print "Caught signal.\n\tStopping Snoopy..."
 
-        f = open('Runlog.out', 'w')
-        f.write('Stopping Snoopy\n')
         self.run = False
         for m in self.modules:
             m.stop()
@@ -166,8 +174,6 @@ class Snoopy():
         # sys.exit(0)
 
     def stop(self):
-        f = open('Runlog.out', 'w')
-        f.write('Stopping Snoopy\n')
         self.run = False
         for m in self.modules:
             m.stop()
