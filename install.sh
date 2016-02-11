@@ -191,6 +191,9 @@ echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" >> ~/.bashrc
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
+echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
+echo "    You can do this by either starting a new bash session or manually by executing the command:"
+echo -e "        \"source ~/.bashrc\""
 cd $RET_DIR
 
 # This is only intended for use in part of a class project.
