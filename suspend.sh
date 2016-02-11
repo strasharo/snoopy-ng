@@ -2,9 +2,13 @@
 # This script puts the wireless interface in managed mode,
 #   connects to the WiFi network, transfers the logfile to the remote server,
 #   and suspends the device.
+#
 # Make sure to disable wireless in the nm-applet first.
 
 at now +10 hours -f ./startup.sh
+
+RET_DIR="$PWD";
+cd $SNOOP_DIR
 
 USER="woodstock"
 SERVER="<server address for database storage>"
@@ -64,3 +68,5 @@ fi
 sudo rm -f /tmp/Snoopy/*
 
 sudo ifconfig $IFACE down;
+
+cd "$RET_DIR"

@@ -8,5 +8,5 @@ at 10 PM -f "$PWD/suspend.sh"         > /dev/null &
 
 mkdir -p /tmp/Snoopy/
 
-sudo bash "$PWD/monitor_mode.sh" > ./monitor.out &
-sudo bash "$PWD/start_snooping.sh" > ./snooping.out&
+sudo bash "$SNOOP_DIR/monitor_mode.sh" > ./monitor.out &
+sudo bash "$SNOOP_DIR/start_snooping.sh" > ./snooping.out&

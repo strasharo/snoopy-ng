@@ -30,6 +30,10 @@ if [[ $EUID != 0 ]]; then
    exit;
 fi
 
+RET_DIR="$PWD";
+SNOOP_DIR=$(cd $(dirname $0); pwd -P);
+cd $SNOOP_DIR;
+
 if [ ! -f "./.DeviceName" ]; then
    read -r -p  "[?] What is the name for this device? [default: \"woodstock\"] " device
    # echo "${device:=woodstock}" > "$(dirname "$0")/.DeviceName"
@@ -145,25 +149,23 @@ fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
 
-# DIR="$(dirname "$0")"
+echo "sqlite:///$SNOOP_DIR/snoopy.db" > ./transforms/db_path.conf
 
-echo "sqlite:///$DIR/snoopy.db" > ./transforms/db_path.conf
-
-ln -s `pwd`/transforms /etc/transforms
-ln -s `pwd`/snoopy.py /usr/bin/snoopy
-ln -s `pwd`/includes/auth_handler.py /usr/bin/snoopy_auth
+ln -s $SNOOP_DIR/transforms /etc/transforms
+ln -s $SNOOP_DIR/snoopy.py /usr/bin/snoopy
+ln -s $SNOOP_DIR/includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-chmod +x ./monitor_mode.sh
-chmod +x ./start_snooping.sh
-chmod +x ./startup.sh
-chmod +x ./suspend.sh
+chmod +x $SNOOP_DIR/*.sh
 
+echo "[+] Adding a link to this folder to your bashrc file." 
+echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" >> ~/.bashrc
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
+cd $RET_DIR
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > ./.acceptedlicense
+echo "Accepted" > $SNOOP_DIR/.acceptedlicense
