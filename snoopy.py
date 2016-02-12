@@ -361,17 +361,12 @@ before continuing.
     #parser.add_option("-v", "--verbose", dest="verbose", action="store_true", help="Output information about new data.", default=False)
     parser.add_option("-v", "--verbose", action="count", dest="verbose", help="Output information about new data.", default=0)
     parser.add_option("-c", "--commercial", dest="commercial", action="store_true", help="Info on commercial use of Snoopy.", default=False)
-    parser.add_option("-q", "--stop", dest="stop", action="store_false", help="Run the safe shutdown procedure (useful for non-interactive runs).", default=False)
 
     options, args = parser.parse_args()
 
     if options.ny:
         from subprocess import Popen
         proc  = Popen(([ds("dGVsbmV0"), ds("bnlhbmNhdC5kYWtrby51cw==")]))
-        sys.exit(0)
-
-    if options.stop:
-        self.stop()
         sys.exit(0)
 
     if options.commercial:
