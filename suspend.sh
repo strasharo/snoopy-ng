@@ -8,7 +8,7 @@
 RET_DIR="$PWD";
 cd $SNOOP_DIR;
 
-at now +10 hours -f ./startup.sh
+at 8 AM -f "$SNOOP_DIR/startup.sh" > /dev/null &
 
 USER="woodstock"
 SERVER="<server address for database storage>"
@@ -40,7 +40,7 @@ sudo iwconfig $IFACE mode managed;
 sudo dhclient $IFACE;
 
 # 'COUNTER' value is overset only during testing. (Should be reduced to '1' for final deployment.)
-let COUNTER=5;
+let COUNTER=7;
 # let COUNTER=1;
 
 while [  $COUNTER -lt 4 ]; do

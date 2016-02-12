@@ -4,25 +4,25 @@
 # Todo: Make this an egg.
 
 if [ $# -gt 0 ] && [[ $1 =~ ^([-]*[h?][eE]?[lL]?[pP]?) ]]; then
-    echo " ___  _  _  _____  _____  ____  _  _"
-    echo "/ __)( \( )(  _  )(  _  )(  _ \( \/ )"
-    echo "\__ \ )  (  )(_)(  )(_)(  )___/ \  /"
-    echo "(___/(_)\_)(_____)(_____)(__)   (__)"
-    echo
-    echo "About:"
-    echo -e "    This script installs Snoopy and its dependencies.\n"
-    echo "Usage:"
-    echo "    Help:"
-    echo "        bash install -h"
-    echo -e "            Display this message\n"
-    echo "    Interactive:"
-    echo -e "        sudo bash install.sh\n"
-    echo "    Automated:"
-    echo "        sudo bash install.sh -c"
-    echo -e "            Install Aircrack-ng (for client use)\n"
-    echo "        sudo bash install.sh -s"
-    echo -e "            Don't install Aircrack-ng (for server use)\n"
-    exit;
+  echo " ___  _  _  _____  _____  ____  _  _"
+  echo "/ __)( \( )(  _  )(  _  )(  _ \( \/ )"
+  echo "\__ \ )  (  )(_)(  )(_)(  )___/ \  /"
+  echo "(___/(_)\_)(_____)(_____)(__)   (__)"
+  echo
+  echo "About:"
+  echo -e "    This script installs Snoopy and its dependencies.\n"
+  echo "Usage:"
+  echo "    Help:"
+  echo "        bash install -h"
+  echo -e "            Display this message\n"
+  echo "    Interactive:"
+  echo -e "        sudo bash install.sh\n"
+  echo "    Automated:"
+  echo "        sudo bash install.sh -c"
+  echo -e "            Install Aircrack-ng (for client use)\n"
+  echo "        sudo bash install.sh -s"
+  echo -e "            Don't install Aircrack-ng (for server use)\n"
+  exit;
 fi
 
 if [[ $EUID != 0 ]]; then
@@ -50,6 +50,8 @@ echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_
 echo -e "\tYou can create or modify these at any time. All must be present in order for 'StartSnooping' to launch using the Wigle module."
 
 if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ]; then
+  read -r -p  "[?] Would you like to use Wigle? [y/N] " wigle
+  if [[ "${wigle:=n}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     read -r -p  "[?] What is your Wigle username? [optional] " WigUser
     if [ $WigUser ]; then
       echo "$WigUser" > "$SNOOP_DIR/.WigleUser";
@@ -71,6 +73,7 @@ if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ]; then
        fi
       fi
     fi
+  fi
 fi
 
 set -e
@@ -108,7 +111,6 @@ echo "[+] Installing required packages..."
 apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
-
 easy_install pip
 easy_install smspdu
 
