@@ -5,8 +5,9 @@ read -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
 bash $SNOOP_DIR/uptime.sh &
 
 mkdir -p /tmp/Snoopy/
+time="date +%k%M"
 
-if [[ `date +%H` -lt 22 ]] && [[ `date +%H` -gt 8 ]]; then
+if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
     at 10 PM -f "$SNOOP_DIR/suspend.sh"         > /dev/null &
 
     sudo bash "$SNOOP_DIR/monitor_mode.sh" > ./monitor.out &
