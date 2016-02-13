@@ -1,8 +1,10 @@
 #!/bin/bash
 # This script puts the wireless interface in monitor mode and starts Snoopy
 
-read -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
-bash $SNOOP_DIR/uptime.sh &
+read -t 30 -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
+if [ battery ]; then 
+    bash $SNOOP_DIR/uptime.sh battery &
+fi
 
 mkdir -p /tmp/Snoopy/
 time="date +%k%M"

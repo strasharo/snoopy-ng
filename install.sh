@@ -191,6 +191,14 @@ chmod +x $SNOOP_DIR/*.sh
 echo "[+] Adding a link to this folder to your bashrc file." 
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" >> ~/.bashrc
 
+echo "[+] Adding an init-script to run Snoopy at boot." 
+RunAtBoot='/etc/init.d/snoopy'
+
+echo "#!/bin/sh" > $RunAtBoot
+echo "bash ${SNOOP_DIR}/startup.sh" >> $RunAtBoot
+chmod +x $RunAtBoot
+update-rc.d "${RunAtBoot}" defaults
+
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
 echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
