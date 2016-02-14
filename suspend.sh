@@ -8,14 +8,14 @@
 RET_DIR="$PWD";
 cd $SNOOP_DIR;
 
-at 8 AM -f "$SNOOP_DIR/startup.sh" > /dev/null &
+at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &
 
 USER="woodstock"
 SERVER="<server address for database storage>"
 NETWORK="<WiFi network to use for database upload>"
-DATABASE="./snoopy.db"
-DEVICE=`cat ./.DeviceName`
-LOCATION=`cat ./.DeviceLoc`
+DATABASE="${SNOOP_DIR}/snoopy.db"
+DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
+LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
 
 # This triggers soft shutdown procedure
 touch /tmp/Snoopy/STOP_SNIFFING
@@ -30,9 +30,9 @@ SNOOP=$(ps -aux | grep snoopy   | grep -v grep | awk '{print $2}' | sed ':a;N;$!
 AIRNG=$(ps -aux | grep airodump | grep -v grep | awk '{print $2}' | sed ':a;N;$!ba;s/\n/ /g');
 sudo kill -s KILL $AIRNG $SNOOP
 
-sudo airmon-ng stop `ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon`;
+sudo airmon-ng stop $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 
-IFACE=`ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan`;
+IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifconfig $IFACE up;
 
 sudo iwconfig $IFACE mode managed;
@@ -68,5 +68,9 @@ fi
 sudo rm -f /tmp/Snoopy/*
 
 sudo ifconfig $IFACE down;
+
+# Shutdown USB hub
+/etc/init.d/networking stop
+echo 0 > /sys/devices/platform/bcm2708_usb/buspower;
 
 cd "$RET_DIR"

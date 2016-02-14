@@ -5,21 +5,21 @@
      \____  $$| $$  \ $$| $$  \ $$| $$  \ $$| $$  \ $$| $$  | $$     ~ (   ) (   ) ~
      /$$  \ $$| $$  | $$| $$  | $$| $$  | $$| $$  | $$| $$  | $$    ( : '~'.~.'~' : )
     |  $$$$$$/| $$  | $$|  $$$$$$/|  $$$$$$/| $$$$$$$/|  $$$$$$$     ~ .~ (   ) ~. ~
-     \______/ |__/  |__/ \______/  \______/ | $$____/  \____  $$      (  : '~' :  ) Raspberry Pi
+     \______/ |__/  |__/ \______/  \______/ | $$____/  \____  $$      (  : '~' :  )
                                             | $$       /$$  | $$       '~ .~~~. ~'
                                             | $$      |  $$$$$$/           '~'
-                                            |__/       \______/
+                                            |__/       \______/       Raspberry Pi
                             
-                                                   Version: 2.0.1
+                                                Version: 2.0.1
 
     
-    Modified for autonomous use on Raspbian OS by SamuelWN
+    (Modified for use on Raspbian OS by SamuelWN)
     
     Code:    glenn@sensepost.com // @glennzw
     Visit:   www.sensepost.com // @sensepost
     License: Non-commercial use
 
-Welcome to Snoopy Version 2.0!
+Welcome to Snoopy Version 2.0.1!
 
 0. Quick Setup
 ==============

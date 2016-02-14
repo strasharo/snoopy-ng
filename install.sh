@@ -108,7 +108,8 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
+  python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
 easy_install pip
@@ -192,12 +193,12 @@ echo "[+] Adding a link to this folder to your bashrc file."
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" >> ~/.bashrc
 
 echo "[+] Adding an init-script to run Snoopy at boot." 
-RunAtBoot='/etc/init.d/snoopy'
-
-echo "#!/bin/sh" > $RunAtBoot
-echo "bash ${SNOOP_DIR}/startup.sh" >> $RunAtBoot
+cat "${SNOOP_DIR}/scripts/InitScript.sh" > /etc/init.d/snoopy
 chmod +x $RunAtBoot
 update-rc.d "${RunAtBoot}" defaults
+
+echo "[+] Diabling LEDs." 
+cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
