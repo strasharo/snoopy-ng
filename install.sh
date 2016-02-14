@@ -181,11 +181,11 @@ then
 fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
-echo "sqlite:///$SNOOP_DIR/snoopy.db" > ./transforms/db_path.conf
+echo "sqlite:///${SNOOP_DIR}/snoopy.db" > ./transforms/db_path.conf
 
-ln -s $SNOOP_DIR/transforms /etc/transforms
-ln -s $SNOOP_DIR/snoopy.py /usr/bin/snoopy
-ln -s $SNOOP_DIR/includes/auth_handler.py /usr/bin/snoopy_auth
+ln -s ${SNOOP_DIR}/transforms /etc/transforms
+ln -s ${SNOOP_DIR}/snoopy.py /usr/bin/snoopy
+ln -s ${SNOOP_DIR}/includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
@@ -203,7 +203,11 @@ chmod +x $RunAtBoot
 update-rc.d "${RunAtBoot}" defaults
 
 echo "[+] Diabling LEDs."
-cp /boot/config.txt{,.bak}
+if [ -f /boot/config.txt_pre-snoopy.bak ]; then
+  cp /boot/config.txt{_pre-snoopy.bak,}
+else
+  cp /boot/config.txt{,_pre-snoopy.bak}
+
 cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
@@ -217,4 +221,4 @@ cd $RET_DIR
 
 # This is only intended for use in part of a class project.
 # Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
-echo "Accepted" > $SNOOP_DIR/.acceptedlicense
+echo "Accepted" > ${SNOOP_DIR}/.acceptedlicense
