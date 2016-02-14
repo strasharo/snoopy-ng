@@ -44,12 +44,12 @@ if [ ! -f "./.DeviceLoc" ]; then
    echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
-echo "Please Note:"
+echo "[I] Please Note:"
 echo -e "\tIf you wish to use Wigle, your login info is stored in these files:"
 echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_DIR/.WigleEmail\"."
-echo -e "\tYou can create or modify these at any time. All must be present in order for 'StartSnooping' to launch using the Wigle module."
+echo -e "\tYou can create or modify these at any time. All must be present in order for 'StartSnooping' to launch using the Wigle module.\n"
 
-if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ]; then
+if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-c" ] ); then
   read -r -p  "[?] Would you like to use Wigle? [y/N] " wigle
   if [[ "${wigle:=n}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     read -r -p  "[?] What is your Wigle username? [optional] " WigUser
@@ -63,16 +63,18 @@ if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ]; then
           if [ $WigEm ]; then
               echo "$WigEm" > "$SNOOP_DIR/.WigleEmail";
           else 
-            echo "Error, no email entered. Credentials will not be stored at this time."
+            echo "[!] Error, no email entered. Credentials will not be stored at this time."
             rm ./.WigleUser
             rm ./.WiglePass
           fi
         else
-         echo "Error, no password entered. Credentials will not be stored at this time."
+         echo "[!] Error, no password entered. Credentials will not be stored at this time."
          rm ./.WigleUser
        fi
       fi
     fi
+  else
+    echo "[I] Skipping Wigle configuration for now."
   fi
 fi
 
@@ -187,21 +189,27 @@ ln -s $SNOOP_DIR/includes/auth_handler.py /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-chmod +x $SNOOP_DIR/*.sh
+chmod +x ${SNOOP_DIR}/*.sh
 
 echo "[+] Adding a link to this folder to your bashrc file." 
-echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" >> ~/.bashrc
+if ! [ -z "$(cat ~/bashrc | grep snoopy_alias)" ]; then
+  echo -e "\n. ~/.snoopy_alias\n" > ~/.bashrc
+fi
+echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
 
 echo "[+] Adding an init-script to run Snoopy at boot." 
 cat "${SNOOP_DIR}/scripts/InitScript.sh" > /etc/init.d/snoopy
 chmod +x $RunAtBoot
 update-rc.d "${RunAtBoot}" defaults
 
-echo "[+] Diabling LEDs." 
+echo "[+] Diabling LEDs."
+cp /boot/config.txt{,.bak}
 cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
+echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
+echo -e "\t /boot.config.txt.bak"
 echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
 echo "    You can do this by either starting a new bash session or manually by executing the command:"
 echo -e "        source ~/.bashrc"
