@@ -44,13 +44,13 @@ if [ ! -f "./.DeviceLoc" ]; then
    echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
-echo "[I] Please Note:"
-echo -e "\tIf you wish to use Wigle, your login info is stored in these files:"
-echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_DIR/.WigleEmail\"."
-echo -e "\tYou can create or modify these at any time. All must be present in order for 'StartSnooping' to launch using the Wigle module.\n"
-
 if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-c" ] ); then
-  read -r -p  "[?] Would you like to use Wigle? [y/N] " wigle
+  echo "[I] Please Note:"
+  echo -e "\tIf you wish to use Wigle, your login info will be stored in these files:"
+  echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_DIR/.WigleEmail\"."
+  echo -e "\tYou can create or modify these at any time. All must be present in order for 'start_snooping' to launch using the Wigle module.\n"
+
+  read -t 15 -r -p  "[?] Would you like to use Wigle? [y/N] " wigle
   if [[ "${wigle:=n}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     read -r -p  "[?] What is your Wigle username? [optional] " WigUser
     if [ $WigUser ]; then
@@ -62,7 +62,7 @@ if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail
           read -r -p  "[?] What is your Wigle email? [optional] " WigEm
           if [ $WigEm ]; then
               echo "$WigEm" > "$SNOOP_DIR/.WigleEmail";
-          else 
+          else
             echo "[!] Error, no email entered. Credentials will not be stored at this time."
             rm ./.WigleUser
             rm ./.WiglePass
@@ -79,6 +79,7 @@ if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail
 fi
 
 set -e
+
 # In case this is the seconds time user runs setup, remove prior symlinks:
 rm -f /usr/bin/sslstrip_snoopy
 rm -f /usr/bin/snoopy
@@ -90,7 +91,7 @@ apt-get update
 
 apt-get install --force-yes --yes ntpdate
 
-#if ps aux | grep ntp | grep -qv grep; then 
+#if ps aux | grep ntp | grep -qv grep; then
 if [ -f /etc/init.d/ntp ]; then
    /etc/init.d/ntp stop
 else
@@ -99,7 +100,7 @@ else
    /etc/init.d/ntp stop
 fi
 echo "[+] Setting time with ntp"
-ntpdate ntp.ubuntu.com 
+ntpdate ntp.ubuntu.com
 /etc/init.d/ntp start
 
 echo "[+] Setting timzeone..."
@@ -144,7 +145,7 @@ pip install dpkt
 
 echo "[-] Removing default version of scapy..."
 apt-get remove -y --force-yes python-scapy
-if ! [ -z "$(pip list | grep "scapy")" ]; then 
+if ! [ -z "$(pip list | grep "scapy")" ]; then
   pip uninstall -y -q scapy;
 fi
 
@@ -152,15 +153,14 @@ echo "[+] Installing patched version of scapy..."
 pip install ./setup/scapy-latest-snoopy_patch.tar.gz
 
 # Only run this on your client, not server:
-if [ $# -eq 0 ]; then
-    read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
-    response="${response:=yes}" # Default to 'yes'
-elif [[ $1 == "-c" ]]; then
-    response="yes";
-elif [[ $1 == "-s" ]]; then
-    response="no";
+if [ $# -ne 0 ]; then
+  if [[ $1 == "-c" ]]; then
+      response="yes";
+  elif [[ $1 == "-s" ]]; then
+      response="no";
+  fi
 else
-    read -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
+    read -t 15 -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
     response="${response:=yes}" # Default to 'yes'
 fi
 
@@ -183,30 +183,33 @@ fi
 echo "[+] Creating symlinks to this folder for snoopy.py."
 echo "sqlite:///${SNOOP_DIR}/snoopy.db" > ./transforms/db_path.conf
 
-ln -s ${SNOOP_DIR}/transforms /etc/transforms
-ln -s ${SNOOP_DIR}/snoopy.py /usr/bin/snoopy
-ln -s ${SNOOP_DIR}/includes/auth_handler.py /usr/bin/snoopy_auth
+ln -s "${SNOOP_DIR}/transforms" /etc/transforms
+ln -s "${SNOOP_DIR}/snoopy.py" /usr/bin/snoopy
+ln -s "${SNOOP_DIR}/includes/auth_handler.py" /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-chmod +x ${SNOOP_DIR}/*.sh
+echo -e "chmod +x \"${SNOOP_DIR}\"/*.sh"
+chmod +x "${SNOOP_DIR}"/*.sh
 
-echo "[+] Adding a link to this folder to your bashrc file." 
-if ! [ -z "$(cat ~/bashrc | grep snoopy_alias)" ]; then
-  echo -e "\n. ~/.snoopy_alias\n" > ~/.bashrc
+echo "[+] Adding a link to this folder to your bashrc file."
+if [ -z "$(cat ${HOME}/.bashrc | grep snoopy_alias)" ]; then
+  echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrcs
 fi
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
 
-echo "[+] Adding an init-script to run Snoopy at boot." 
+echo "[+] Adding an init-script to run Snoopy at boot."
 cat "${SNOOP_DIR}/scripts/InitScript.sh" > /etc/init.d/snoopy
-chmod +x $RunAtBoot
-update-rc.d "${RunAtBoot}" defaults
+echo -e "\nbash ${SNOOP_DIR}/startup.sh" >> /etc/init.d/snoopy
+chmod +x /etc/init.d/snoopy
+update-rc.d snoopy defaults
 
 echo "[+] Diabling LEDs."
 if [ -f /boot/config.txt_pre-snoopy.bak ]; then
   cp /boot/config.txt{_pre-snoopy.bak,}
 else
   cp /boot/config.txt{,_pre-snoopy.bak}
+fi
 
 cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
