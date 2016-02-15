@@ -174,7 +174,8 @@ then
    echo "[-] Making aircrack-ng"
    make
    echo "[-] Installing aircrack-ng"
-   make installrc_local.sh   # airodump-ng-oui-update
+   make install
+   # airodump-ng-oui-update
    cd ../
    rm -rf aircrack-ng
 fi
