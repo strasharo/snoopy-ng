@@ -3,7 +3,7 @@
 
 if [ "$#" -gt 0 ]; then
     read -t 30 -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
-    if ! [ -z $battery ]; then 
+    if ! [ -z $battery ]; then
         bash $SNOOP_DIR/uptime.sh battery &
     fi
 fi
@@ -21,5 +21,5 @@ if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
 
     sudo bash "$SNOOP_DIR/start_snooping.sh" > ./snooping.out&
 else
-    $SNOOP_DIR/suspend.sh
+    sudo bash $SNOOP_DIR/suspend.sh
 fi
