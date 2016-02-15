@@ -174,8 +174,7 @@ then
    echo "[-] Making aircrack-ng"
    make
    echo "[-] Installing aircrack-ng"
-   make install
-   # airodump-ng-oui-update
+   make installrc_local.sh   # airodump-ng-oui-update
    cd ../
    rm -rf aircrack-ng
 fi
@@ -194,29 +193,51 @@ chmod +x "${SNOOP_DIR}"/*.sh
 
 echo "[+] Adding a link to this folder to your bashrc file."
 if [ -z "$(cat ${HOME}/.bashrc | grep snoopy_alias)" ]; then
-  echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrcs
+  echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
 fi
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
 
-echo "[+] Adding an init-script to run Snoopy at boot."
-cat "${SNOOP_DIR}/scripts/InitScript.sh" > /etc/init.d/snoopy
-echo -e "\nbash ${SNOOP_DIR}/startup.sh" >> /etc/init.d/snoopy
-chmod +x /etc/init.d/snoopy
-update-rc.d snoopy defaults
+echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
+AlterRC=false
+if [ -f /etc/rc.local_pre-snoopy.bak ]; then
+  # If a backup does exist, restore it.
+  cp /etc/rc.local{_pre-snoopy.bak,}
+else
+  # If no backup exists, make one.
+  cp /etc/rc.local{,_pre-snoopy.bak}
+  AlterRC=true
+fi
 
+if ! [ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]; then
+  sed -i '$ d' /etc/rc.local # Remove exit command
+fi
+
+# Append Snoopy initalization scripts
+cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
+echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" >> /etc/init.d/snoopy
+echo "exit 0"
+
+AlterBoot=false
 echo "[+] Diabling LEDs."
 if [ -f /boot/config.txt_pre-snoopy.bak ]; then
   cp /boot/config.txt{_pre-snoopy.bak,}
 else
   cp /boot/config.txt{,_pre-snoopy.bak}
+  AlterBoot=true
 fi
 
 cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
-echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
-echo -e "\t /boot.config.txt.bak"
+if [ $"AlterRC" = true ]; then
+  echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
+  echo -e "\t /boot.config.txt_pre-snoopy.bak"
+fi
+if [ $"AlterBoot" = true ]; then
+  echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
+  echo -e "\t /boot.config.txt_pre-snoopy.bak"
+fi
 echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
 echo "    You can do this by either starting a new bash session or manually by executing the command:"
 echo -e "        source ~/.bashrc"
