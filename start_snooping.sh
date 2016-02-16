@@ -11,7 +11,7 @@ DEV_LOC=""
 if [ ! -f "./.DeviceName" ]; then
     echo "ERROR!"
     echo "Please make sure that the file '$SNOOP_DIR/.DeviceName' exists and contains a meaningful name for this device."
-    exit;
+    exit -1;
 else
     DEV_NAME=$(cat "$SNOOP_DIR/.DeviceName");
 fi
@@ -19,7 +19,7 @@ fi
 if [ ! -f "./.DeviceLoc" ]; then
     echo "ERROR!"
     echo "Please make sure that the file '$SNOOP_DIR/.DeviceLoc' exists and contains a meaningful location for this device."
-    exit;
+    exit -1;
 else
     DEV_LOC=$(cat "$SNOOP_DIR/.DeviceLoc");
 fi
