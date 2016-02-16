@@ -218,6 +218,9 @@ cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
 echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" >> /etc/init.d/snoopy
 echo "exit 0"
 
+# Disable networking daemon
+update-rc.d networking remove
+
 echo "[+] Diabling LEDs."
 chmod -R 777 /sys/class/leds/led0
 echo 1 >/sys/class/leds/led0/brightness

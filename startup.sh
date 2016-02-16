@@ -15,7 +15,6 @@ if [ "$#" -gt 0 ]; then
     fi
 fi
 
-sudo /etc/init.d/networking stop
 sudo { export alias SNOOP_DIR=${SNOOP_DIR} }
 mkdir -p /tmp/Snoopy/
 time="date +%k%M"
