@@ -12,17 +12,16 @@ if [ ! -f "./.DeviceName" ]; then
     echo "ERROR!"
     echo "Please make sure that the file '$SNOOP_DIR/.DeviceName' exists and contains a meaningful name for this device."
     exit -1;
-else
-    DEV_NAME=$(cat "$SNOOP_DIR/.DeviceName");
 fi
 
 if [ ! -f "./.DeviceLoc" ]; then
     echo "ERROR!"
     echo "Please make sure that the file '$SNOOP_DIR/.DeviceLoc' exists and contains a meaningful location for this device."
     exit -1;
-else
-    DEV_LOC=$(cat "$SNOOP_DIR/.DeviceLoc");
 fi
+
+DEV_NAME=$(cat "$SNOOP_DIR/.DeviceName");
+DEV_LOC=$(cat "$SNOOP_DIR/.DeviceLoc");
 
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 sudo rm /tmp/Snoopy/*
