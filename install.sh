@@ -111,7 +111,7 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump gcc libusb-dev \
   python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
@@ -214,29 +214,20 @@ if ! [ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]; then
   sed -i '$ d' /etc/rc.local # Remove exit command
 fi
 
-# Append Snoopy initalization scripts
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
 echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" >> /etc/init.d/snoopy
 echo "exit 0"
 
-AlterBoot=false
 echo "[+] Diabling LEDs."
-if [ -f /boot/config.txt_pre-snoopy.bak ]; then
-  cp /boot/config.txt{_pre-snoopy.bak,}
-else
-  cp /boot/config.txt{,_pre-snoopy.bak}
-  AlterBoot=true
-fi
+chmod -R 777 /sys/class/leds/led0
+echo 1 >/sys/class/leds/led0/brightness
+echo none > /sys/class/leds/led0/trigger
 
 cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
 if [ $"AlterRC" = true ]; then
-  echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
-  echo -e "\t /boot.config.txt_pre-snoopy.bak"
-fi
-if [ $"AlterBoot" = true ]; then
   echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
   echo -e "\t /boot.config.txt_pre-snoopy.bak"
 fi

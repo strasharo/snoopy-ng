@@ -4,8 +4,8 @@
 GET_IFACES="ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep";
 
 # Power on the USB bus
-echo 1 > /sys/devices/platform/bcm2708_usb/buspower;
-sleep 2;
+# echo 1 > /sys/devices/platform/bcm2708_usb/buspower;
+# sleep 2;
 
 # Stop any existing interfaces (as a precaution)
 IFACE=$(eval "${GET_IFACES} mon");
@@ -19,3 +19,5 @@ sudo airmon-ng start $IFACE;
 
 IFACE=$(eval "${GET_IFACES} mon");
 sudo airodump-ng $IFACE & echo $! > /tmp/Snoopy/Airodump.pid
+
+sudo ./hub-ctrl -h 0 -P 3 -p 0;

@@ -79,7 +79,7 @@ fi
 sudo ifconfig $IFACE down;
 
 # Shutdown USB hub
-sudo /etc/init.d/networking stop
-sudo echo 0 > /sys/devices/platform/bcm2708_usb/buspower;
+# sudo /etc/init.d/networking stop
+# sudo echo 0 > /sys/devices/platform/bcm2708_usb/buspower;
 
 cd "$RET_DIR"
