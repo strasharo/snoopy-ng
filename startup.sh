@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script puts the wireless interface in monitor mode and starts Snoopy
 
-/usr/bin/tvservice -o
+sudo /usr/bin/tvservice -o
 
 if [ "$#" -gt 0 ]; then
     read -t 30 -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
@@ -10,13 +10,13 @@ if [ "$#" -gt 0 ]; then
     fi
 fi
 
-sudo export alias SNOOP_DIR=${SNOOP_DIR}
+sudo { export alias SNOOP_DIR=${SNOOP_DIR} }
 
 mkdir -p /tmp/Snoopy/
 time="date +%k%M"
 
 if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
-    at 10 PM -f "$SNOOP_DIR/suspend.sh"         > /dev/null &
+    sudo at 10 PM -f "$SNOOP_DIR/suspend.sh"         > /dev/null &
 
     sudo bash "$SNOOP_DIR/monitor_mode.sh" > ./monitor.out &
 

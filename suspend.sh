@@ -8,7 +8,7 @@
 RET_DIR="$PWD";
 cd $SNOOP_DIR;
 
-at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &
+sudo at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &
 
 USER="woodstock"
 SERVER="<server address for database storage>"
@@ -79,7 +79,7 @@ fi
 sudo ifconfig $IFACE down;
 
 # Shutdown USB hub
-/etc/init.d/networking stop
-echo 0 > /sys/devices/platform/bcm2708_usb/buspower;
+sudo /etc/init.d/networking stop
+sudo echo 0 > /sys/devices/platform/bcm2708_usb/buspower;
 
 cd "$RET_DIR"
