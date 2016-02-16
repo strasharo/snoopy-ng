@@ -197,6 +197,7 @@ if [ -z "$(cat ${HOME}/.bashrc | grep snoopy_alias)" ]; then
   echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
 fi
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
+echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ~/.snoopy_alias
 
 echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
 AlterRC=false
