@@ -74,7 +74,7 @@ if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail
       fi
     fi
   else
-    echo "[I] Skipping Wigle configuration for now."
+    echo -e "\n[I] Skipping Wigle configuration for now."
   fi
 fi
 
@@ -111,7 +111,7 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump gcc libusb-dev \
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
   python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 
 # Python packages
@@ -160,8 +160,10 @@ if [ $# -ne 0 ]; then
       response="no";
   fi
 else
-    read -t 15 -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] " response
-    response="${response:=yes}" # Default to 'yes'
+    # Safely timeout the 'read' prompt
+    if ( $(read -t 15 -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] "); (echo $? > 128) ); then
+      response="${response:=yes}" # Default to 'yes'
+    fi
 fi
 
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
@@ -225,8 +227,6 @@ echo "[+] Diabling LEDs."
 chmod -R 777 /sys/class/leds/led0
 echo 1 >/sys/class/leds/led0/brightness
 echo none > /sys/class/leds/led0/trigger
-
-cat "${SNOOP_DIR}/scripts/Disable_LEDs.txt" >> /boot/config.txt
 
 echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
