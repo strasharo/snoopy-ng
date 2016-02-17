@@ -160,7 +160,7 @@ if [ $# -ne 0 ]; then
       response="no";
   fi
 else
-  read -t 15 -r -p  "[?] Do you want to download, compile, and install Aircrack-ng? [Y/n] " response)
+  read -r -p  "[?] Do you want to download, compile, and install Aircrack-ng? [Y/n] " response
   response="${response:=yes}" # Default to 'yes'
 fi
 
@@ -193,7 +193,7 @@ echo -e "chmod +x \"${SNOOP_DIR}\"/*.sh"
 chmod +x "${SNOOP_DIR}"/*.sh
 
 echo "[+] Adding a link to this folder to your bashrc file."
-if [ -z "$(cat ${HOME}/.bashrc | grep snoopy_alias)" ]; then
+if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
   echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
 fi
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
@@ -210,13 +210,14 @@ else
   AlterRC=true
 fi
 
-if ! [ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]; then
+if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
   sed -i '$ d' /etc/rc.local # Remove exit command
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
 echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" >> /etc/init.d/snoopy
-echo "exit 0"
+echo "exit 0" >> /etc/init.d/snoopy
+chmod 777 /etc/init.d/snoopy
 
 # Disable networking daemon
 update-rc.d networking remove
