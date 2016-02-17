@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script puts the wireless interface in monitor mode and starts Snoopy
 # Run with
-#   nohup bash /home/pi/snoopy-ng/startup.sh &
+#   nohup bash startup.sh &
 
 sudo /usr/bin/tvservice -o
 
@@ -16,7 +16,6 @@ if [ "$#" -gt 0 ]; then
     fi
 fi
 
-sudo { export alias SNOOP_DIR=${SNOOP_DIR} }
 mkdir -p /tmp/Snoopy/
 time="date +%k%M"
 
