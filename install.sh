@@ -196,8 +196,8 @@ echo "[+] Adding a link to this folder to your bashrc file."
 if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
   echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
 fi
-echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ~/.snoopy_alias
-echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ~/.snoopy_alias
+echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ${HOME}/.snoopy_alias
+echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ${HOME}/.snoopy_alias
 
 echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
 AlterRC=false
@@ -215,7 +215,7 @@ if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
-echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" >> /etc/init.d/snoopy
+echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" > /etc/init.d/snoopy
 echo "exit 0" >> /etc/init.d/snoopy
 chmod 777 /etc/init.d/snoopy
 
