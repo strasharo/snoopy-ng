@@ -189,8 +189,8 @@ ln -s "${SNOOP_DIR}/includes/auth_handler.py" /usr/bin/snoopy_auth
 chmod +x /usr/bin/snoopy
 chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
-echo -e "chmod +x \"${SNOOP_DIR}\"/*.sh"
 chmod +x "${SNOOP_DIR}"/*.sh
+echo "${SNOOP_DIR}" > /etc/SNOOP_DIR.conf
 
 echo "[+] Adding a link to this folder to your bashrc file."
 if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
@@ -199,16 +199,16 @@ fi
 echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ${HOME}/.snoopy_alias
 echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ${HOME}/.snoopy_alias
 
-echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
+# echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
 AlterRC=false
-if [ -f /etc/rc.local_pre-snoopy.bak ]; then
-  # If a backup does exist, restore it.
-  cp /etc/rc.local{_pre-snoopy.bak,}
-else
-  # If no backup exists, make one.
-  cp /etc/rc.local{,_pre-snoopy.bak}
-  AlterRC=true
-fi
+# if [ -f /etc/rc.local_pre-snoopy.bak ]; then
+#   # If a backup does exist, restore it.
+#   cp /etc/rc.local{_pre-snoopy.bak,}
+# else
+#   # If no backup exists, make one.
+#   cp /etc/rc.local{,_pre-snoopy.bak}
+#   AlterRC=true
+# fi
 
 if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
   sed -i '$ d' /etc/rc.local # Remove exit command

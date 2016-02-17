@@ -6,6 +6,7 @@
 # Make sure to disable wireless in the nm-applet first.
 
 RET_DIR="$PWD";
+SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
 sudo at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &

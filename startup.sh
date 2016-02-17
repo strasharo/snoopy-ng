@@ -6,6 +6,7 @@
 sudo /usr/bin/tvservice -o
 
 RET_DIR="$PWD";
+SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
 if [ "$#" -gt 0 ]; then
