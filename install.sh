@@ -160,10 +160,8 @@ if [ $# -ne 0 ]; then
       response="no";
   fi
 else
-    # Safely timeout the 'read' prompt
-    if ( $(read -t 15 -r -p  "[?] Do you want to download, compile, and install aircrack? [Y/n] "); (echo $? > 128) ); then
-      response="${response:=yes}" # Default to 'yes'
-    fi
+  read -t 15 -r -p  "[?] Do you want to download, compile, and install Aircrack-ng? [Y/n] " response)
+  response="${response:=yes}" # Default to 'yes'
 fi
 
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
