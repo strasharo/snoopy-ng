@@ -13,7 +13,6 @@ sudo at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &
 
 USER="woodstock"
 SERVER="<server address for database storage>"
-NETWORK="<WiFi network to use for database upload>"
 DATABASE="${SNOOP_DIR}/snoopy.db"
 DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
 LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
@@ -42,12 +41,6 @@ sudo airmon-ng stop $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 
 if [ -f "$DATABASE" ]; then
-    sudo ifconfig $IFACE up;
-
-    sudo iwconfig $IFACE mode managed;
-    # sudo iwconfig $IFACE essid "${NETWORK}";
-    sudo dhclient $IFACE;
-
     # 'COUNTER' value is overset only during testing. (Should be reduced to '1' for final deployment.)
     let COUNTER=7;
     # let COUNTER=1;

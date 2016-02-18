@@ -215,7 +215,7 @@ if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
-echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" > /etc/init.d/snoopy
+# echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" > /etc/init.d/snoopy
 echo "exit 0" >> /etc/init.d/snoopy
 chmod 777 /etc/init.d/snoopy
 
