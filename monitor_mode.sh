@@ -18,4 +18,4 @@ sudo airmon-ng check kill;
 sudo airmon-ng start $IFACE;
 
 IFACE=$(eval "${GET_IFACES} mon");
-sudo airodump-ng $IFACE & echo $! > /tmp/Snoopy/Airodump.pid
+sudo airodump-ng $IFACE > /dev/null & echo $! > /tmp/Snoopy/Airodump.pid
