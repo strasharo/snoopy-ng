@@ -15,7 +15,7 @@ fi
 
 IFACE=$(eval "${GET_IFACES} wlan");
 sudo airmon-ng check kill;
-sudo airmon-ng start $IFACE > /dev/null ;
+sudo airmon-ng start $IFACE;
 
 IFACE=$(eval "${GET_IFACES} mon");
-sudo airodump-ng $IFACE > /dev/null & echo $! > /tmp/Snoopy/Airodump.pid
+sudo airodump-ng $IFACE > /dev/null 2>&1 & echo $! > /tmp/Snoopy/Airodump.pid
