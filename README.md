@@ -237,7 +237,7 @@ Snoopy will run on any Linux device with sufficient support to install files fro
 
 Operating System
 ----------------
-Kali 1.05 and Ubuntu 12.04 have been tested. Similar systems should work.
+Rasbian Lite has been tested. Similar systems should work.
 
 Extra Notes:
 ------------
@@ -250,7 +250,7 @@ Extra Notes:
 
  Known Issues
  ------------
- An error condition occurs when collecinting data locally, sycning to a remote server, and then pulling a replica from the server. e.g.:
+ An error condition occurs when collecting data locally, sycning to a remote server, and then pulling a replica from the server. e.g.:
 
  **Server**
 
