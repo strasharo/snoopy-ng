@@ -9,49 +9,45 @@
                                             | $$       /$$  | $$       '~ .~~~. ~'
                                             | $$      |  $$$$$$/           '~'
                                             |__/       \______/       Raspberry Pi
-                            
+
                                                 Version: 2.0.1
 
-    
+
     (Modified for use on Raspbian OS by SamuelWN)
-    
+
     Code:    glenn@sensepost.com // @glennzw
     Visit:   www.sensepost.com // @sensepost
     License: Non-commercial use
 
 Welcome to Snoopy Version 2.0.1!
 
+**NOTE**
+This is targetted for installation on Raspbian Lite.
+
 0. Quick Setup
 ==============
+
 Strapped for time? Try this:
 
 **To install and setup Snoopy:**
 
-    bash install.sh
+    sudo bash install.sh -c
 
-**To save data from the wireless, sysinfo, and heartbeat plugins locally:**
+**To launch the Snoopy daemon:**
+    bash startup.sh
 
-    snoopy -v -m wifi:mon=True -m sysinfo -m heartbeat -d myDrone -l London
+To sync data to a remote server over WiFi SCP, be sure to modify the 'WiFi-Connect.sh' file.
 
-**To sync data from a client to a server:**
- 
- _Server:_
- 
-    snoopy_auth --create myDrone     # Create account
-    snoopy -v -m server              # Start server plugin
-
-_Client:_
- 
-    snoopy -v -m wifi:mon=True -s http://<server>:9001/ -d myDrone -l London -k <key>
+---
 
 1. INTRODUCTION AND OVERVIEW
 =============================
-Snoopy is a distributed, sensor, data collection, interception, analysis, and visualization framework. It is written in a modular format, allowing for the collection of arbitrary data from various sources via Python plugins. 
+Snoopy is a distributed, sensor, data collection, interception, analysis, and visualization framework. It is written in a modular format, allowing for the collection of arbitrary data from various sources via Python plugins.
 
 1. Architecture
 
     Each Snoopy instance can run multiple plugins simultaneously. A plugin collects data, which is queried by the main Snoopy process and is written to a local database. Snoopy can sync data between clients (drones) and a server, and clients (drones) can also pull replicas of data from a server. Each Snoopy instance can run plugins appropriate for its position in the greater picture. Here's a diagram to depict one possible setup:
-    
+
         Drone01                     Server01
         +---------------+           +--------------+
         | Plugins:      |           | Plugins:     |
@@ -70,8 +66,8 @@ Snoopy is a distributed, sensor, data collection, interception, analysis, and vi
         |   * GPS       |   ||       |              |       |             |   ||
         +---------------+   ||       +--------------+       +-------------+   ||
                             ||                                             Internet
-        Drone03             ||                             Laptop01           || 
-        +---------------+   ||                            +--------------+    ||                                
+        Drone03             ||                             Laptop01           ||
+        +---------------+   ||                            +--------------+    ||
         | Plugins:      |   ||                            | Plugins:     |    ||
         |   * Thermal   |   ||                            |  *RemotePull |    ||
         |   * Camera    |===/                             |              |====/
@@ -91,33 +87,33 @@ Running 'sh install.sh' within the snoopy-ng.git directory will install all of t
 ========
 
 Basic
------   
-  
-To see all available flags and options, we have made two commands for you: 
-    
+-----
+
+To see all available flags and options, we have made two commands for you:
+
 root@kali:~# snoopy --help (shorthand -h)
 
-This command gives you all running options, such as which server to sync to, to the name of the drone and its location. In addition, it also introduces how one would run the various plugins. 
+This command gives you all running options, such as which server to sync to, to the name of the drone and its location. In addition, it also introduces how one would run the various plugins.
 
 root@kali:~# snoopy --list (shorthand -i)
 
 This command lists all available plugins and the parameters required by each plugin to function correctly. To get more verbose information about each plugin, use '-ii' or '-iii'. To get information about one specific plugin use '-i -m <pluginName>'.
 
 Plugins can be specified with the --plugin (or shorthand -m) option. Numerous plugins can be specified, and will be started in the order entered. Each plugin will be given 60 seconds to indicate its ready state, after which it times out and the next plugin will be initiated. This can be useful if subsequent plugins depend on actions of prior ones.
-   
+
 Each plugin can take numerous parameters (as indicated in the --list output) in the form of comma separated key value pairs. Below we use the 'example' plugin, which simply generates random numbers.
-   
+
        snoopy --plugin example:x=1,v=True
-       
+
 If drone / location options are not supplied default values are supplied. Alternatively, they can be specified as below.
-   
+
        snoopy --plugin example:x=1,v=True --drone myDrone --location Cansas
 
 Data Synchronization
 --------------------
-       
+
 Data can be synchronized to a remote machine by supplying the --server (-s) option. The remote machine should be running the server plugin (--plugin server). A key should be generated for a drone name before hand. The below illustrates this.
-   
+
    **Server**
 
         root@server:~# snoopy_auth --create myDrone01 --verbose
@@ -127,33 +123,33 @@ Data can be synchronized to a remote machine by supplying the --server (-s) opti
         root@kali:~# snoopy --plugin server
         [+] Running webserver on '0.0.0.0:9001'
         [+] Plugin server caught data for 2 tables.
-        
+
    **Client**
-    
+
         root@client:~# snoopy --plugin example:x=1 --drone myDrone --key GWWVF --server http://<server_ip>:9001/ --verbose
         [+] Starting Snoopy with plugins: example
         [+] Plugin example created new random number: 21
         [+] Snoopy successfully sunc 2 elements over 2 tables.
-         
+
 
    **Remote Data Pull**
 
 Data can be pulled from a server using the *local_sync* plugin. For example, assume the server as above is running, and perform this operation from the client:
-   
+
     root@client:~# snoopy --plugin local_sync:server_url=http://<server_ip>:9001/ --drone myDrone --key GWWVF
     [+] Plugin local_sync pulled 888 records from remote server.
-    
+
 Database Storage
 ----------------
 The default behaviour is to store all data inside a SQLITE file *snoopy.db*. This can be overiden with the parameter --dbms. See the SQL Alchemy documentation on how to specify different database engines (http://docs.sqlalchemy.org/en/rel_0_9/dialects/index.html). As an example, below we use MySQL:
 
         root@client:~# snoopy -v --plugin example --dbms=mysql://glenn:secret@localhost/snoopy_db
-        [+] Capturing local only. Saving to 'mysql://glenn:secret@localhost/snoopy_db'   
+        [+] Capturing local only. Saving to 'mysql://glenn:secret@localhost/snoopy_db'
 
 It might be useful to use SQLITE storage on smaller devices, and have the server plugin saving to MySQL (or similar). A further example may be of use where we specify the file location to store data, such as on a removable media:
 
         root@client:~# snoopy -v --plugin example --dbms=sqlite:////media/USB01/snoopy.db
-        
+
 There is a --flush (-f) option to 'flush' data from local storage once it has been synchronized with an upstream server.
 
 
@@ -163,9 +159,9 @@ Snoopy can be started with an upstart script (see the ./setup/upstarts folder). 
 
 Debian based systems (e.g. Kali) don't seem to support upstart. In the interim, the suppied rc.local file can be used to start Snoopy and related services on boot.
 
----    
-    
-3. DATA VISUALIZATION 
+---
+
+3. DATA VISUALIZATION
 =====================
 
 Maltego is the preferred tool to perform visualization. Instructions are below:
@@ -188,7 +184,7 @@ Database Specification
 If not using the default sqlite format edit the following file to specify the location of the data:
 
         snoopy_ng/transforms/db_path.conf
-        
+
 
 Graph Sharing
 --------------
@@ -247,18 +243,18 @@ Extra Notes:
     plugins depend on prior ones.
  * If you don't specify a drone or location, default ones will be provided.
  * You can run Snoopy with no plugins in order to only sync data.
- 
+
  Known Issues
  ------------
  An error condition occurs when collecinting data locally, sycning to a remote server, and then pulling a replica from the server. e.g.:
- 
+
  **Server**
- 
+
         root@kali:~# snoopy -m server -m wigle:username=u,password=p,email=a@a.com
         [+] Running webserver on '0.0.0.0:9001'
         [+] Plugin server caught data for 2 tables.
- 
-         
+
+
 **Client**
 
 		root@client:~# snoopy -m wifi -m local_sync:server_url=http://1.1.1.1:9001/ -d myDrone -l London -k secretkey -s http://1.1.1.1:9001/
