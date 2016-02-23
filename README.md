@@ -22,8 +22,10 @@
 Welcome to Snoopy Version 2.0.1!
 
 **NOTE**
-  This is targetted for installation on Raspbian Lite. Several changes (potentially severe) will be made to the environment.
-  *DO NOT* install this on any device that contains data you care about.
+
+    This is targetted for installation on Raspbian Lite. Several changes (potentially severe) will be made to the environment.
+
+    *DO NOT* install this on any device that contains data you care about.
 
 0. Quick Setup
 ==============
