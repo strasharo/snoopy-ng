@@ -44,7 +44,7 @@ if [ ! -f "./.DeviceLoc" ]; then
    echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
-if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-c" ] ); then
+if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-cW" ] ); then
   echo "[I] Please Note:"
   echo -e "\tIf you wish to use Wigle, your login info will be stored in these files:"
   echo -e "\t\t\"$SNOOP_DIR/.WigleUser\", \"$SNOOP_DIR/.WiglePass\", and \"$SNOOP_DIR/.WigleEmail\"."
@@ -192,15 +192,15 @@ chmod +x /usr/bin/sslstrip_snoopy
 chmod +x "${SNOOP_DIR}"/*.sh
 echo "${SNOOP_DIR}" > /etc/SNOOP_DIR.conf
 
-echo "[+] Adding a link to this folder to your bashrc file."
-if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
-  echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
-fi
-echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ${HOME}/.snoopy_alias
-echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ${HOME}/.snoopy_alias
+# echo "[+] Adding a link to this folder to your bashrc file."
+# if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
+#   echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
+# fi
+# echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ${HOME}/.snoopy_alias
+# echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ${HOME}/.snoopy_alias
 
 # echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
-AlterRC=false
+# AlterRC=false
 # if [ -f /etc/rc.local_pre-snoopy.bak ]; then
 #   # If a backup does exist, restore it.
 #   cp /etc/rc.local{_pre-snoopy.bak,}
@@ -224,20 +224,26 @@ update-rc.d networking remove
 
 echo "[+] Diabling LEDs."
 chmod -R 777 /sys/class/leds/led0
-echo 1 >/sys/class/leds/led0/brightness
+echo 1 > /sys/class/leds/led0/brightness
 echo none > /sys/class/leds/led0/trigger
 
-echo "[+] Done. Try run 'snoopy' or 'snoopy_auth'"
+echo "[+] Done. " # Try running 'snoopy' or 'snoopy_auth'"
+echo "[I] Remember to configure the 'WiFi-Connect.sh' script for network, you can run snoopy by running:"
+echo -e "\t ${PWD}/startup.sh"
+echo "    or restarting the device."
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
-if [ $"AlterRC" = true ]; then
-  echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
-  echo -e "\t /boot.config.txt_pre-snoopy.bak"
-fi
-echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
-echo "    You can do this by either starting a new bash session or manually by executing the command:"
-echo -e "        source ~/.bashrc"
+
+# if [ $"AlterRC" = true ]; then
+#   echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
+#   echo -e "\t /boot.config.txt_pre-snoopy.bak"
+# fi
+# echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
+# echo "    You can do this by either starting a new bash session or manually by executing the command:"
+# echo -e "        source ~/.bashrc"
+
 cd $RET_DIR
 
-# This is only intended for use in part of a class project.
-# Please uncomment the following line unless you are are already intricately familiar with this software and its liscencing policies:
+# NOTE:
+#   This is only intended for use in part of a class project.
+#   Please ccomment out the following line unless you are are already intricately familiar with this software and its liscencing policies:
 echo "Accepted" > ${SNOOP_DIR}/.acceptedlicense
