@@ -3,9 +3,7 @@
 
 GET_IFACES="ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep";
 
-# Power on the USB bus
-# echo 1 > /sys/devices/platform/bcm2708_usb/buspower;
-# sleep 2;
+sudo ifdown $(eval "${GET_IFACES} wlan");
 
 # Stop any existing interfaces (as a precaution)
 IFACE=$(eval "${GET_IFACES} mon");

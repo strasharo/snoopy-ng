@@ -22,6 +22,8 @@ if [ $# -gt 0 ] && [[ $1 =~ ^([-]*[h?][eE]?[lL]?[pP]?) ]]; then
   echo -e "            Install Aircrack-ng (for client use)\n"
   echo "        sudo bash install.sh -s"
   echo -e "            Don't install Aircrack-ng (for server use)\n"
+  echo "        sudo bash install.sh -cW"
+  echo -e "            Install Aircrack-ng (for client use, with Wigle)\n"
   exit;
 fi
 
@@ -192,30 +194,11 @@ chmod +x /usr/bin/sslstrip_snoopy
 chmod +x "${SNOOP_DIR}"/*.sh
 echo "${SNOOP_DIR}" > /etc/SNOOP_DIR.conf
 
-# echo "[+] Adding a link to this folder to your bashrc file."
-# if [[ -z $(cat ${HOME}/.bashrc | grep snoopy_alias) ]]; then
-#   echo -e "\n. ./.snoopy_alias\n" >> ${HOME}/.bashrc
-# fi
-# echo -e "\nexport alias SNOOP_DIR='${SNOOP_DIR}'\n" > ${HOME}/.snoopy_alias
-# echo -e "\nfunction startup { nohup bash ${SNOOP_DIR}/startup.sh & }" >> ${HOME}/.snoopy_alias
-
-# echo "[+] Modifying your 'rc.local' file to run Snoopy at boot."
-# AlterRC=false
-# if [ -f /etc/rc.local_pre-snoopy.bak ]; then
-#   # If a backup does exist, restore it.
-#   cp /etc/rc.local{_pre-snoopy.bak,}
-# else
-#   # If no backup exists, make one.
-#   cp /etc/rc.local{,_pre-snoopy.bak}
-#   AlterRC=true
-# fi
-
 if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
   sed -i '$ d' /etc/rc.local # Remove exit command
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
-# echo -e "\nbash ${SNOOP_DIR}/startup.sh\n" > /etc/init.d/snoopy
 echo "exit 0" >> /etc/init.d/snoopy
 chmod 777 /etc/init.d/snoopy
 
@@ -228,18 +211,12 @@ echo 1 > /sys/class/leds/led0/brightness
 echo none > /sys/class/leds/led0/trigger
 
 echo "[+] Done. " # Try running 'snoopy' or 'snoopy_auth'"
-echo "[I] Remember to configure the 'WiFi-Connect.sh' script for network, you can run snoopy by running:"
+echo "[I] Remember to configure the 'wpa_supplicant.conf' file for network. It is located in:"
+echo -e "\t /etc/wpa_supplicant/wpa_supplicant.conf"
+echo "[I] You can run snoopy by running:"
 echo -e "\t ${PWD}/startup.sh"
 echo "    or restarting the device."
 echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when using Maltego"
-
-# if [ $"AlterRC" = true ]; then
-#   echo "[I] Changes have been made to the file '/boot/config.txt'. The original version has been backed up to:"
-#   echo -e "\t /boot.config.txt_pre-snoopy.bak"
-# fi
-# echo "[I] Ensure you refresh your bash configuration before running before attempting to use Snoopy."
-# echo "    You can do this by either starting a new bash session or manually by executing the command:"
-# echo -e "        source ~/.bashrc"
 
 cd $RET_DIR
 
