@@ -45,7 +45,7 @@ if [ -f "$DATABASE" ]; then
     let COUNTER=7;
     # let COUNTER=1;
 
-    while [[ $COUNTER -lt 4 ]]; do
+    while [  $COUNTER -lt 4 ]; do
         if [ scp $DATABASE "${USER}@${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
             rm $DATABASE;
             let COUNTER=10;
@@ -55,7 +55,7 @@ if [ -f "$DATABASE" ]; then
         fi
     done
 
-    if [[ $COUNTER -eq 10 ]]; then
+    if [ $COUNTER -eq 10 ]; then
         echo "Database synced successfully." | tee -a ./Database.log
     else
         filename=$(basename "$DATABASE");
