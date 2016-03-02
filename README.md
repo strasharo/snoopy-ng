@@ -260,5 +260,4 @@ Extra Notes:
 
 
 **Client**
-
-		root@client:~# snoopy -m wifi -m local_sync:server_url=http://1.1.1.1:9001/ -d myDrone -l London -k secretkey -s http://1.1.1.1:9001/
+root@client:~# snoopy -m wifi -m local_sync:server_url=http://1.1.1.1:9001/ -d myDrone -l London -k secretkey -s http://1.1.1.1:9001/
