@@ -168,18 +168,30 @@ fi
 
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-   echo "[+] Installing required packages..."
-   apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
-   echo "[+] Downloading aircrack-ng..."
-   svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng
-   cd aircrack-ng
-   echo "[-] Making aircrack-ng"
-   make
-   echo "[-] Installing aircrack-ng"
-   make install
-   airodump-ng-oui-update
-   cd ../
-   rm -rf aircrack-ng
+  echo "[+] Installing required packages..."
+  apt-get install --force-yes --yes libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
+  echo "[+] Downloading aircrack-ng..."
+  wget http://download.aircrack-ng.org/aircrack-ng-1.2-beta2.tar.gz
+  tar xzf aircrack-ng-1.2-beta1.tar.gz
+  cd aircrack-ng-1.2-beta2
+  make
+  echo "[-] Installing aircrack-ng"
+  make install
+  airodump-ng-oui-update
+  cd ..
+  # rm -rf aircrack-ng-1.2-beta1*
+
+  # apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
+  # echo "[+] Downloading aircrack-ng..."
+  # svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng
+  # cd aircrack-ng
+  # echo "[-] Making aircrack-ng"
+  # make
+  # echo "[-] Installing aircrack-ng"
+  # make install
+  # airodump-ng-oui-update
+  # cd ../
+  # rm -rf aircrack-ng
 fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
@@ -199,8 +211,7 @@ if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
-echo "exit 0" >> /etc/init.d/snoopy
-chmod 777 /etc/init.d/snoopy
+echo "exit 0" >> /etc/rc.local
 
 # Disable networking daemon
 update-rc.d networking remove
