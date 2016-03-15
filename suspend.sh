@@ -55,6 +55,8 @@ if [ -f "$DATABASE" ]; then
         fi
     done
 
+    NOW=$(date +%F@%T);
+    
     if [ $COUNTER -eq 10 ]; then
         echo "Database synced successfully." | tee -a ./Database.log
     else
@@ -62,10 +64,9 @@ if [ -f "$DATABASE" ]; then
         ext="${filename##*.}";
         filename="${filename%.*}";
 
-        NOW=$(date +%F@%T);
-        echo "[${NOW}] :: Database failed to sync. Data will be maintained locally." | tee -a ./Database.log
-        mv $DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
+        echo "[${NOW}] :: Database failed to sync. Data will still be maintained locally." | tee -a ./Database.log
     fi
+    mv $DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
 
     sudo rm -f /tmp/Snoopy/*
 fi

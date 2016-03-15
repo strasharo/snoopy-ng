@@ -46,6 +46,12 @@ if [ ! -f "./.DeviceLoc" ]; then
    echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
+if [ ! -f "./.supplicant.conf" ]; then
+   read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
+   read -r -p  "[?] What is the PSK to use for the network? " PSK
+   wpa_passphrase $SSID $PSK  > "$SNOOP_DIR/.supplicant.conf"
+fi
+
 if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-cW" ] ); then
   echo "[I] Please Note:"
   echo -e "\tIf you wish to use Wigle, your login info will be stored in these files:"
