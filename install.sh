@@ -175,29 +175,17 @@ fi
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   echo "[+] Installing required packages..."
-  apt-get install --force-yes --yes libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
+  apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
   echo "[+] Downloading aircrack-ng..."
-  wget http://download.aircrack-ng.org/aircrack-ng-1.2-beta2.tar.gz
-  tar xzf aircrack-ng-1.2-beta1.tar.gz
-  cd aircrack-ng-1.2-beta2
+  svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng
+  cd aircrack-ng
+  echo "[-] Making aircrack-ng"
   make
   echo "[-] Installing aircrack-ng"
   make install
   airodump-ng-oui-update
-  cd ..
-  # rm -rf aircrack-ng-1.2-beta1*
-
-  # apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
-  # echo "[+] Downloading aircrack-ng..."
-  # svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng
-  # cd aircrack-ng
-  # echo "[-] Making aircrack-ng"
-  # make
-  # echo "[-] Installing aircrack-ng"
-  # make install
-  # airodump-ng-oui-update
-  # cd ../
-  # rm -rf aircrack-ng
+  cd ../
+  rm -rf aircrack-ng
 fi
 
 echo "[+] Creating symlinks to this folder for snoopy.py."
@@ -211,6 +199,9 @@ chmod +x /usr/bin/snoopy_auth
 chmod +x /usr/bin/sslstrip_snoopy
 chmod +x "${SNOOP_DIR}"/*.sh
 echo "${SNOOP_DIR}" > /etc/SNOOP_DIR.conf
+
+# Single-line solution doesn't yet work:
+# sed -i 's|^exit 0.*$|$(cat ${SNOOP_DIR}/scripts/rc_local.sh)\n\nexit 0|' /etc/rc.local
 
 if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
   sed -i '$ d' /etc/rc.local # Remove exit command
