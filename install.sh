@@ -43,13 +43,36 @@ fi
 
 if [ ! -f "./.DeviceLoc" ]; then
    read -r -p  "[?] What is the location for this device? [default: \"test\"] " loc
-   echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
+    echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
 if [ ! -f "./.supplicant.conf" ]; then
-   read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
-   read -r -p  "[?] What is the PSK to use for the network? " PSK
-   wpa_passphrase $SSID $PSK  > "$SNOOP_DIR/.supplicant.conf"
+    read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
+    read -r -p  "[?] What your identity for the network? " UNAME
+    read -r -p  "[?] What is the PSK to use for the network? " PSK
+
+    PSK=$(echo -n "$PSK" | iconv -t utf16le | openssl md4);
+    PSK=$(echo $PSK|cut -d ' ' -f 2)
+
+    WPASUP="
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid=\"${SSID}\"
+    priority=1
+    proto=RSN
+    key_mgmt=WPA-EAP
+    pairwise=CCMP
+    auth_alg=OPEN
+    eap=PEAP
+    identity=\"${UNAME}\"
+    password=hash:${PSK}
+    phase1=\"peaplabel=0\"
+    phase2=\"auth=MSCHAPV2\"
+}"
+
+  echo "$WPASUP" > "$SNOOP_DIR/.supplicant.conf"
 fi
 
 if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-cW" ] ); then
@@ -119,8 +142,10 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
-  python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+# apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
+#   python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at  \
+  tcpdump python-serial sqlite3 python-requests iw build-essential python-flask python-dateutil python-dev libxml2-dev libxslt-dev pyrit
 
 # Python packages
 easy_install pip
@@ -132,7 +157,6 @@ pip install -Iv https://pypi.python.org/packages/source/r/requests/requests-0.14
 pip install httplib2
 pip install BeautifulSoup
 pip install publicsuffix
-#pip install mitmproxy
 pip install pyinotify
 pip install netifaces
 pip install dnslib
@@ -218,9 +242,10 @@ chmod -R 777 /sys/class/leds/led0
 echo 1 > /sys/class/leds/led0/brightness
 echo none > /sys/class/leds/led0/trigger
 
+echo
 echo "[+] Done. " # Try running 'snoopy' or 'snoopy_auth'"
-echo "[I] Remember to configure the 'wpa_supplicant.conf' file for network. It is located in:"
-echo -e "\t /etc/wpa_supplicant/wpa_supplicant.conf"
+# echo "[I] Remember to configure the 'wpa_supplicant.conf' file for network. It is located in:"
+# echo -e "\t /etc/wpa_supplicant/wpa_supplicant.conf"
 echo "[I] You can run snoopy by running:"
 echo -e "\t ${PWD}/startup.sh"
 echo "    or restarting the device."
