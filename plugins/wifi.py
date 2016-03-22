@@ -117,7 +117,7 @@ class Snoop(Thread):
                 self.packeteer(packet)
             except StopIteration:
                 goGo = False
-        
+
         end = int(os.times()[4])
         duration = end - start
         time.sleep(3)
@@ -127,7 +127,6 @@ class Snoop(Thread):
         if self.pcap:
             self.parse_pcap()
         else:
-
             shownMessage = False
             while not self.STOP_SNIFFING:
                 if self.enable_monitor_mode:
@@ -156,6 +155,8 @@ class Snoop(Thread):
                     self.sniffErrors+=1
                 if self.sniffErrors >3 :
                     logging.error("Restarting module '%s' after 5 failed attempts" %__file__)
+
+                # Adjust this variable to modify observation frequency:
                 time.sleep(5)
 
     def stopperCheck(self):
