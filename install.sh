@@ -72,8 +72,14 @@ network={
     phase2=\"auth=MSCHAPV2\"
 }"
 
-  echo "$WPASUP" > "$SNOOP_DIR/.supplicant.conf"
+  echo "$WPASUP" > "./.supplicant.conf"
 fi
+
+if [ ! -f "./.DeviceKey" ]; then
+  echo $(< /dev/urandom tr -dc A-Z0-9 | head -c15) > ./.DeviceKey;
+fi
+
+
 
 if ( [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ] ) && ( [ $# -eq 0 ] || [ $1 == "-cW" ] ); then
   echo "[I] Please Note:"
@@ -243,9 +249,8 @@ echo 1 > /sys/class/leds/led0/brightness
 echo none > /sys/class/leds/led0/trigger
 
 echo
-echo "[+] Done. " # Try running 'snoopy' or 'snoopy_auth'"
-# echo "[I] Remember to configure the 'wpa_supplicant.conf' file for network. It is located in:"
-# echo -e "\t /etc/wpa_supplicant/wpa_supplicant.conf"
+echo "[+] Done!"
+echo "[I] Remember to configure the 'sync_db.sh' file your remote server."
 echo "[I] You can run snoopy by running:"
 echo -e "\t ${PWD}/startup.sh"
 echo "    or restarting the device."

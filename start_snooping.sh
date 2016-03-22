@@ -23,12 +23,13 @@ fi
 
 DEV_NAME=$(cat "$SNOOP_DIR/.DeviceName");
 DEV_LOC=$(cat "$SNOOP_DIR/.DeviceLoc");
+DEV_KEY=$(cat "$SNOOP_DIR/.DeviceKey");
 
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 sudo rm /tmp/Snoopy/*
 
 if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ]; then
-    sudo snoopy -v -m wifi:iface=$IFACE -d "$DEV_NAME" -l "$DEV_LOC" -k "$DEV_NAME" &  echo $! > /tmp/Snoopy/Snoopy.pid
+    sudo snoopy -v -m wifi:iface=$IFACE -d "$DEV_NAME" -l "$DEV_LOC" -k "$DEV_KEY" &  echo $! > /tmp/Snoopy/Snoopy.pid
     # sudo snoopy -v -m wifi:iface=$IFACE -m sysinfo -m heartbeat -d $DEV_NAME -l "$DEV_LOC" &  echo $! > /tmp/Snoopy/Snoopy.pid
 else
     WIG_U=$(cat ./.WigleUser);

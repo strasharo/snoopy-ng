@@ -20,7 +20,9 @@ mkdir -p /tmp/Snoopy/
 time="date +%k%M"
 
 if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
-    at 10 PM -f ./suspend.sh         > /dev/null &
+    at 1:45 PM  -f ./backup.sh  > /dev/null &
+    at 7 PM     -f ./backup.sh  > /dev/null &
+    at 10 PM    -f ./suspend.sh > /dev/null &
 
     sudo bash ./monitor_mode.sh > /dev/null &
 
