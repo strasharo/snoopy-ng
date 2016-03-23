@@ -238,7 +238,7 @@ if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
 fi
 
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
-echo "exit 0" >> /etc/rc.local
+echo -e "\nexit 0" >> /etc/rc.local
 
 # Disable networking daemon
 update-rc.d networking remove
