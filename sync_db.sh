@@ -12,7 +12,7 @@ DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
 LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
 
 # This triggers soft shutdown procedure
-touch /tmp/Snoopy/STOP_SNIFFING
+sudo touch /tmp/Snoopy/STOP_SNIFFING
 
 # Give sub-processes a chance to clean things up...
 sleep 1m
