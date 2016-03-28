@@ -72,7 +72,7 @@ network={
     phase2=\"auth=MSCHAPV2\"
 }"
 
-  echo "$WPASUP" > "./wpa_supplicant.conf"
+  echo "$WPASUP" > "/etc/wpa_supplicant/wpa_supplicant.conf"
 fi
 
 if [ ! -f "./.DeviceKey" ]; then
