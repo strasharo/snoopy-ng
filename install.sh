@@ -73,6 +73,7 @@ network={
 }"
 
   echo "$WPASUP" > "/etc/wpa_supplicant/wpa_supplicant.conf"
+  touch "./.supplicant.conf"
 fi
 
 if [ ! -f "./.DeviceKey" ]; then
