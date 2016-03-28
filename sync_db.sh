@@ -5,7 +5,7 @@
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
-USER="woodstock"
+USER="snoopy"
 SERVER="<server address for database storage>"
 DATABASE="${SNOOP_DIR}/snoopy.db"
 DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
@@ -36,9 +36,7 @@ IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifup $IFACE;
 
 if [ -f "$DATABASE" ]; then
-    # 'COUNTER' value is overset only during testing. (Should be reduced to '1' for final deployment.)
-    let COUNTER=7;
-    # let COUNTER=1;
+    let COUNTER=1;
 
     while [ $COUNTER -lt 4 ]; do
         if [ scp $DATABASE "${USER}@${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
