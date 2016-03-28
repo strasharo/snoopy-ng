@@ -72,7 +72,7 @@ network={
     phase2=\"auth=MSCHAPV2\"
 }"
 
-  echo "$WPASUP" > "/etc/wpa_supplicant/wpa_supplicant.conf"
+  echo "$WPASUP" > "./wpa_supplicant.conf"
 fi
 
 if [ ! -f "./.DeviceKey" ]; then
@@ -240,8 +240,8 @@ fi
 cat "${SNOOP_DIR}/scripts/rc_local.sh" >> /etc/rc.local
 echo -e "\nexit 0" >> /etc/rc.local
 
-# Disable networking daemon
-update-rc.d networking remove
+# # Disable networking daemon
+# update-rc.d networking remove
 
 echo "[+] Diabling LEDs."
 chmod -R 777 /sys/class/leds/led0
