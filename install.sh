@@ -238,7 +238,7 @@ if ! [[ -z $(tail -n 1 /etc/rc.local | grep "exit 0") ]]; then
   sed -i '$ d' /etc/rc.local # Remove exit command
 fi
 
-echo "$(cat /etc/SNOOP_DIR.conf)/scripts/rc_local.sh" >> /etc/rc.local
+echo 'bash $(cat /etc/SNOOP_DIR.conf)/scripts/rc_local.sh' >> /etc/rc.local
 echo -e "\nexit 0" >> /etc/rc.local
 
 # # Disable networking daemon
