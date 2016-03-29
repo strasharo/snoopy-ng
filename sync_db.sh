@@ -36,18 +36,27 @@ IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifup $IFACE;
 
 if [ -f "$DATABASE" ]; then
+    NOW=$(date +%F@%T);
+
+    filename=$(basename "$DATABASE");
+    ext="${filename##*.}";
+    filename="${filename%.*}";
+
+    DATABASE = "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
+    mv "${SNOOP_DIR}/snoopy.db" $DATABASE
+
     let COUNTER=1;
 
     ssh "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
     while [ $COUNTER -lt 4 ]; do
-        if [ scp $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
+        scp $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
+        if [ $? -eq 0 ]; then
 
             IPs="`date +%F' '%T`
 Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
 Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
 "
-
             echo "${IPs}" | ssh "${SERVER}" "cat > /home/${USER}/${LOCATION}/${DEVICE}/IP.log"
 
             let COUNTER=10;
@@ -57,19 +66,11 @@ Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
         fi
     done
 
-    NOW=$(date +%F@%T);
-
     if [ $COUNTER -eq 10 ]; then
         echo "Database synced successfully." | tee -a ./Database.log
     else
         echo "[${NOW}] :: Database failed to sync. Data will still be maintained locally." | tee -a ./Database.log
     fi
-
-    filename=$(basename "$DATABASE");
-    ext="${filename##*.}";
-    filename="${filename%.*}";
-
-    mv $DATABASE "$(dirname "$DATABASE")/${filename}_${NOW}.${ext}";
 
     sudo rm -f /tmp/Snoopy/*
 fi
