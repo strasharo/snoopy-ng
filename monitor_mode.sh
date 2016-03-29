@@ -4,8 +4,8 @@
 GET_IFACES="ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep";
 
 # Disable any existing WiFi connections (WPA_Supplicant, etc)
-sudo ifdown $(eval "${GET_IFACES} wlan");
 sudo killall wpa_supplicant
+sudo ifdown $(eval "${GET_IFACES} wlan");
 
 # Stop any existing interfaces (as a precaution)
 IFACE=$(eval "${GET_IFACES} mon");
