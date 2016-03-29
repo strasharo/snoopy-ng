@@ -12,7 +12,7 @@ cd $SNOOP_DIR;
 if [ "$#" -gt 0 ]; then
     read -t 30 -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
     if ! [ -z $battery ]; then
-        bash ./uptime.sh battery &
+        sudo bash ./uptime.sh battery &
     fi
 fi
 
