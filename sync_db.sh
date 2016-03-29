@@ -47,7 +47,7 @@ if [ -f "$DATABASE" ]; then
 
     let COUNTER=1;
 
-    ssh "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
+    ssh -F /home/pi/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
     while [ $COUNTER -lt 4 ]; do
         scp $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
