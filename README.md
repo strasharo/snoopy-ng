@@ -40,8 +40,6 @@ Strapped for time? Try this:
 
     bash startup.sh
 
-To sync data to a remote server over WiFi SCP, be sure to modify the 'WiFi-Connect.sh' file.
-
 ---
 
 1. INTRODUCTION AND OVERVIEW
