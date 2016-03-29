@@ -6,7 +6,7 @@ SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
 USER="snoopy"
-SERVER="<server address for database storage>"
+SERVER=`cat ${SNOOP_DIR}/.server`
 DATABASE="${SNOOP_DIR}/snoopy.db"
 DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
 LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
@@ -37,6 +37,8 @@ sudo ifup $IFACE;
 
 if [ -f "$DATABASE" ]; then
     let COUNTER=1;
+
+    ssh "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
     while [ $COUNTER -lt 4 ]; do
         if [ scp $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
