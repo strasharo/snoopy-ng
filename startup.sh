@@ -9,13 +9,6 @@ RET_DIR="$PWD";
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
-if [ "$#" -gt 0 ]; then
-    read -t 30 -r -p  "[?] Which battery is being used? ['white' / 'black'] " battery
-    if ! [ -z $battery ]; then
-        sudo bash ./uptime.sh battery &
-    fi
-fi
-
 mkdir -p /tmp/Snoopy/
 time="date +%k%M"
 
