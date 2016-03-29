@@ -42,7 +42,7 @@ if [ -f "$DATABASE" ]; then
     ext="${filename##*.}";
     filename="${filename%.*}";
 
-    DATABASE = "$SNOOP_DIR/${filename}_${NOW}.${ext}";
+    DATABASE="$SNOOP_DIR/${filename}_${NOW}.${ext}";
     mv "${SNOOP_DIR}/snoopy.db" $DATABASE
 
     let COUNTER=1;
