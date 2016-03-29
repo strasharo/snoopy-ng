@@ -1,3 +1,5 @@
+set +e
+
 # Disables the HDMI interface:
 /usr/bin/tvservice -o
 
