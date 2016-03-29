@@ -149,7 +149,7 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump \
+apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump dnsutils\
   python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
 # apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at  \
   # tcpdump python-serial sqlite3 python-requests iw build-essential python-flask python-dateutil python-dev libxml2-dev libxslt-dev pyrit
