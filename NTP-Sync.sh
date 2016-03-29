@@ -5,8 +5,7 @@
 # Need to ensure Wifi-Connect works properly before proceeding
 exit 0;
 
-
-$(cat /etc/SNOOP_DIR.conf)/WiFi-Connect.sh
+ifup $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 
 echo "[+] Setting time with ntp"
 ntpdate ntp.ubuntu.com
