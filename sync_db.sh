@@ -39,13 +39,13 @@ if [ -f "$DATABASE" ]; then
     let COUNTER=1;
 
     while [ $COUNTER -lt 4 ]; do
-        if [ scp $DATABASE "${USER}@${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
+        if [ scp $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}" -eq 0 ]; then
 
             IPs="
 Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
 Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
 "
-            ssh "${USER}@${SERVER}" 'echo "${IPs}" >> /home/${USER}/${LOCATION}/${DEVICE}/IP.log'
+            ssh "${SERVER}" 'echo "${IPs}" >> /home/${USER}/${LOCATION}/${DEVICE}/IP.log'
 
             let COUNTER=10;
         else
