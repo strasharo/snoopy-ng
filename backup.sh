@@ -3,5 +3,5 @@
 
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 
-"${SNOOP_DIR}/sync_db.sh"
-"${SNOOP_DIR}/startup.sh"
+sudo bash "${SNOOP_DIR}/sync_db.sh"
+sudo bash "${SNOOP_DIR}/startup.sh"

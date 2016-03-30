@@ -10,9 +10,10 @@ if [ -f /etc/SNOOP_DIR.conf ]; then
         DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
         LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
 
+        # Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
         echo "`date +%F' '%T`
         Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
-        Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
+        Local: $(hostname -I)
         " | ssh -F /home/pi/.ssh/config "${SERVER}" "cat > /home/snoopy/${LOCATION}/${DEVICE}/IP.log"
     fi
 fi
