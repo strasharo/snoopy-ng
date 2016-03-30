@@ -13,6 +13,6 @@ if [ -f /etc/SNOOP_DIR.conf ]; then
         echo "date +%F' '%T
         Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
         Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
-        " | ssh -F /home/pi/.ssh/config "${SERVER}" "cat > /home/${USER}/${LOCATION}/${DEVICE}/IP.log"
+        " | ssh -F /home/pi/.ssh/config "${SERVER}" "cat > /home/snoopy/${LOCATION}/${DEVICE}/IP.log"
     fi
 fi
