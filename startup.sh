@@ -22,7 +22,7 @@ if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
     # Give monitor mode a chance to initailize
     sleep 15;
 
-    sudo bash ./start_snooping.sh > ./snooping.out&
+    sudo bash ./start_snooping.sh > /dev/null&
 else
     sudo bash ./suspend.sh
 fi
