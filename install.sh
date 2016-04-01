@@ -49,7 +49,7 @@ fi
 if [ ! -f "./.supplicant.conf" ]; then
     read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
     read -r -p  "[?] What your identity for the network? " UNAME
-    read -r -p  "[?] What is the PSK to use for the network? " PSK
+    read -r -p -s "[?] What is the PSK to use for the network? " PSK
 
     PSK=$(echo -n "$PSK" | iconv -t utf16le | openssl md4);
     PSK=$(echo $PSK|cut -d ' ' -f 2)
