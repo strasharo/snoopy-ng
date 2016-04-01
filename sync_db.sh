@@ -42,8 +42,8 @@ if [ -f "$DATABASE" ]; then
     ext="${filename##*.}";
     filename="${filename%.*}";
 
-    DATABASE="$SNOOP_DIR/${filename}_${NOW}.${ext}";
-    mv "${SNOOP_DIR}/snoopy.db" "$DATABASE"
+    DATABASE="${filename}_${NOW}.${ext}";
+    mv "${SNOOP_DIR}/snoopy.db" "${SNOOP_DIR}/$DATABASE"
 
     let COUNTER=1;
 
