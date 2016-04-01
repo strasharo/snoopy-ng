@@ -3,7 +3,7 @@
 
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 
-sudo at 8 AM -f "${SNOOP_DIR}/startup.sh" > /dev/null &
+sudo shutdown -r 8:00
 sudo bash "${SNOOP_DIR}/sync_db.sh"
 
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);

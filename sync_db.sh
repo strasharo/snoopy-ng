@@ -75,4 +75,5 @@ Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
     sudo rm -f /tmp/Snoopy/*
 fi
 
+sudo killall wpa_supplicant
 sudo ifdown $IFACE;
