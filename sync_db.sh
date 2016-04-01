@@ -43,14 +43,14 @@ if [ -f "$DATABASE" ]; then
     filename="${filename%.*}";
 
     DATABASE="$SNOOP_DIR/${filename}_${NOW}.${ext}";
-    mv "${SNOOP_DIR}/snoopy.db" $DATABASE
+    mv "${SNOOP_DIR}/snoopy.db" "$DATABASE"
 
     let COUNTER=1;
 
     ssh -F /home/pi/.ssh/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
     while [ $COUNTER -lt 4 ]; do
-        scp  -F /home/pi/.ssh/config "$DATABASE" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
+        scp  -F /home/pi/.ssh/config "${SNOOP_DIR}/${DATABASE}" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
         if [ $? -eq 0 ]; then
 
             IPs="`date +%F' '%T`
