@@ -4,4 +4,10 @@
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 
 sudo bash "${SNOOP_DIR}/sync_db.sh"
-sudo bash "${SNOOP_DIR}/startup.sh"
+sudo airmon-ng check kill
+
+sudo bash ./monitor_mode.sh > /dev/null &
+# Give monitor mode a chance to initailize
+sleep 15;
+
+sudo bash ./start_snooping.sh > /dev/null &
