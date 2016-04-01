@@ -57,7 +57,7 @@ if [ -f "$DATABASE" ]; then
 Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
 Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
 "
-            echo "${IPs}" | ssh "${SERVER}" "cat > /home/${USER}/${LOCATION}/${DEVICE}/IP.log"
+            echo "${IPs}" | ssh -F /home/pi/.ssh/config "${SERVER}" "cat > /home/${USER}/${LOCATION}/${DEVICE}/IP.log"
 
             let COUNTER=10;
         else
