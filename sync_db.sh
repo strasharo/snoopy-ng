@@ -36,7 +36,7 @@ IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifup $IFACE;
 
 if [ -f "$DATABASE" ]; then
-    NOW=$(date +%F_%T);
+    NOW=$(date +%F@%T);
 
     filename=$(basename "$DATABASE");
     ext="${filename##*.}";
