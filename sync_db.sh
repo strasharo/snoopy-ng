@@ -50,7 +50,7 @@ if [ -f "$DATABASE" ]; then
     ssh -F /home/pi/.ssh/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
     while [ $COUNTER -lt 4 ]; do
-        scp  -F /home/pi/.ssh/config $DATABASE "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
+        scp  -F /home/pi/.ssh/config "$DATABASE" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
         if [ $? -eq 0 ]; then
 
             IPs="`date +%F' '%T`
