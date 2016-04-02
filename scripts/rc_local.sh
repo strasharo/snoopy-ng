@@ -1,5 +1,3 @@
-set +e
-
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 cd $SNOOP_DIR;
 
@@ -7,7 +5,12 @@ cd $SNOOP_DIR;
 /usr/bin/tvservice -o
 
 # Get current time with NTP:
-bash $SNOOP_DIR/NTP-Sync.sh
+( /etc/init.d/ntp stop
+until ping -nq -c3 8.8.8.8; do
+   echo "Waiting for network..."
+done
+ntpdate -s time.nist.gov
+/etc/init.d/ntp start )&
 
 # Send IP address info to remote server
 bash $SNOOP_DIR/sync_ip.sh
