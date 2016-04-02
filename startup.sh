@@ -3,28 +3,24 @@
 # Run with
 #   nohup bash startup.sh &
 
-sudo /usr/bin/tvservice -o
-
-RET_DIR="$PWD";
 SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
-cd $SNOOP_DIR;
 
 mkdir -p /tmp/Snoopy/
-time="date +%k%M"
 
-if [[ $(eval "$time") -le "2200" ]] && [[ "$(eval "$time")" -gt "730" ]]; then
-    at 1:45 PM  -f ./backup.sh  > /dev/null &
-    at 7 PM     -f ./backup.sh  > /dev/null &
-    at 10 PM    -f ./suspend.sh > /dev/null &
+NOW="date +%k%M"
 
-    sudo bash ./monitor_mode.sh > /dev/null &
+if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
+    sudo at 1:45 PM  -f "${SNOOP_DIR}/backup.sh"  > /dev/null &
+    sudo at 7 PM     -f "${SNOOP_DIR}/backup.sh"  > /dev/null &
+    sudo at 10 PM    -f "${SNOOP_DIR}/suspend.sh" > /dev/null &
+
+    sudo bash "${SNOOP_DIR}/monitor_mode.sh" > /dev/null &
 
     # Give monitor mode a chance to initailize
-    sleep 15;
+    sleep ${SNOOP_DIR}/backup.sh15;
 
-    sudo bash ./start_snooping.sh > /dev/null &
+    sudo bash "${SNOOP_DIR}/start_snooping.sh" > /dev/null &
 else
-    sudo bash ./suspend.sh
+    sudo bash "${SNOOP_DIR}/suspend.sh"
 fi
 
-cd $RET_DIR
