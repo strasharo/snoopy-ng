@@ -32,12 +32,12 @@ sudo kill -s KILL $AIRNG #SNOOP
 
 sudo airmon-ng stop $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 
-IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
-sudo ifconfig $IFACE down
+# IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
+# sudo ifconfig $IFACE down
 # sudo ifup $IFACE;
-sudo killall wpa_supplicant
-sudo wpa_supplicant -B -i $IFACE -c /home/pi/wpa.conf
-sudo dhcpcd $IFACE
+# sudo killall wpa_supplicant
+# sudo wpa_supplicant -B -i $IFACE -c /home/pi/wpa.conf
+# sudo dhcpcd $IFACE
 
 if [ -f "$DATABASE" ]; then
     NOW=$(date +%F@%T);
