@@ -33,6 +33,7 @@ sudo kill -s KILL $AIRNG #SNOOP
 sudo airmon-ng stop $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
+sudo ifconfig $IFACE down
 sudo ifup $IFACE;
 
 if [ -f "$DATABASE" ]; then
@@ -49,10 +50,10 @@ if [ -f "$DATABASE" ]; then
 
     ssh -F /home/pi/.ssh/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
-    while [ $COUNTER -lt 4 ]; do
+    # while [ $COUNTER -lt 4 ]; do
         scp  -F /home/pi/.ssh/config "${SNOOP_DIR}/${DATABASE}" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
-        if [ $? -eq 0 ]; then
 
+        if [ $? -eq 0 ]; then
             IPs="`date +%F' '%T`
 Remote: $(dig +short myip.opendns.com @resolver1.opendns.com)
 Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
@@ -60,14 +61,14 @@ Local: $(ifconfig $IFACE | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1)
             echo "${IPs}" | ssh -F /home/pi/.ssh/config "${SERVER}" "cat > /home/${USER}/${LOCATION}/${DEVICE}/IP.log"
 
             let COUNTER=10;
-        else
-            sleep 30;
-            let COUNTER=COUNTER+1;
-        fi
-    done
+    #     else
+    #         sleep 30;
+    #         let COUNTER=COUNTER+1;
+    #     fi
+    # done
 
     if [ $COUNTER -eq 10 ]; then
-        echo "Database synced successfully." | tee -a ./Database.log
+        echo "[${NOW}] :: Database synced successfully." | tee -a ./Database.log
     else
         echo "[${NOW}] :: Database failed to sync. Data will still be maintained locally." | tee -a ./Database.log
     fi
