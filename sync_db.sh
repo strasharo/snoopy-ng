@@ -47,6 +47,18 @@ if [ -f "$DATABASE" ]; then
     DATABASE="OldDBs/${filename}_${NOW}.${ext}";
     mv "${SNOOP_DIR}/snoopy.db" "${SNOOP_DIR}/$DATABASE"
 
+    let COUNTER=0;
+    until [ $COUNTER -gt 4 ]; do
+        if $(ping -nq -c3 8.8.8.8); then
+            let COUNTER=10;
+        else
+            echo "[${NOW}] :: Waiting for network..." | tee -a ./Database.log;
+            echo -e "[${NOW}] ::\n$(ifconfig $IFACE)" > ./sync_db--ifconf.log
+            echo -e "[${NOW}] ::\n$(iwconfig $IFACE)" > ./sync_db--iwconf.log
+            let COUNTER=COUNTER+1;
+        fi;
+    done
+
     let COUNTER=1;
 
     ssh -F /home/pi/.ssh/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
