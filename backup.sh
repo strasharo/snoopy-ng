@@ -5,4 +5,4 @@ SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
 
 sudo bash "${SNOOP_DIR}/sync_db.sh"
 
-sudo reboot now
+sudo shutdown -r

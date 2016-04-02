@@ -13,7 +13,8 @@ ntpdate -s time.nist.gov
 /etc/init.d/ntp start )&
 
 # Send IP address info to remote server
-bash $SNOOP_DIR/sync_ip.sh
+# Sync
+bash $SNOOP_DIR/scripts/RSync.sh
 
 # Update Snoopy
 bash $SNOOP_DIR/scripts/git_update.sh
