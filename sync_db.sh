@@ -36,7 +36,7 @@ IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifconfig $IFACE down
 # sudo ifup $IFACE;
 sudo killall wpa_supplicant
-sudo wpa_supplicant -B -i $IFACE -c /etc/wpa_supplicant/wpa_supplicant.conf
+sudo wpa_supplicant -B -i $IFACE -c /home/pi/wpa.conf
 sudo dhcpcd $IFACE
 
 if [ -f "$DATABASE" ]; then
