@@ -35,6 +35,7 @@ sudo airmon-ng stop $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifconfig $IFACE down
 # sudo ifup $IFACE;
+sudo killall wpa_supplicant
 sudo wpa_supplicant -B -i $IFACE -c /etc/wpa_supplicant/wpa_supplicant.conf
 sudo dhcpcd $IFACE
 
@@ -65,7 +66,7 @@ if [ -f "$DATABASE" ]; then
 
     ssh -F /home/pi/.ssh/config "${SERVER}" mkdir -p "/home/snoopy/${LOCATION}/${DEVICE}/"
 
-    rsync -a -e 'ssh -F /home/pi/.ssh/config' "${SNOOP_DIR}/${DATABASE}/" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
+    rsync -a -e 'ssh -F /home/pi/.ssh/config' "${SNOOP_DIR}/OldDBs/" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
     # scp  -F /home/pi/.ssh/config "${SNOOP_DIR}/${DATABASE}" "${SERVER}:/home/${USER}/${LOCATION}/${DEVICE}"
 
     if [ $? -eq 0 ]; then
