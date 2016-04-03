@@ -4,7 +4,7 @@ SERVER=`cat ${SNOOP_DIR}/.server`
 DEVICE=`cat ${SNOOP_DIR}/.DeviceName`
 LOCATION=`cat ${SNOOP_DIR}/.DeviceLoc`
 
-
+set +e
 
 IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 
