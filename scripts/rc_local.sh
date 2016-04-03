@@ -13,7 +13,7 @@ ntpdate -s time.nist.gov
 /etc/init.d/ntp start )&
 
 # # Sync
-# bash $SNOOP_DIR/scripts/RSync.sh
+bash $SNOOP_DIR/scripts/RSync.sh
 
 # Update Snoopy
 bash $SNOOP_DIR/scripts/git_update.sh

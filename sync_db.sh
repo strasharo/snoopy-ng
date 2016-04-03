@@ -45,4 +45,3 @@ if [ -f "$DATABASE" ]; then
 
     sudo rm -f /tmp/Snoopy/*
 fi
-# sudo shutdown -r
