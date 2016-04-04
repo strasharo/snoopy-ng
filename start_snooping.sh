@@ -3,7 +3,7 @@
 # This script starts Snoopy
 
 RET_DIR="$PWD";
-SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 cd $SNOOP_DIR;
 
 DEV_NAME=""

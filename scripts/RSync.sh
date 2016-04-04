@@ -1,4 +1,4 @@
-SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 USER="snoopy"
 SERVER=`cat ${SNOOP_DIR}/.server`
 DEVICE=`cat ${SNOOP_DIR}/.DeviceName`

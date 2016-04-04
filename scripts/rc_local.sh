@@ -1,4 +1,4 @@
-SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 cd $SNOOP_DIR;
 
 # Disables the HDMI interface:

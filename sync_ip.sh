@@ -3,7 +3,7 @@ IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 sudo ifup $IFACE
 
 if [ -f /etc/SNOOP_DIR.conf ]; then
-    SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+    SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
     if [ -f ${SNOOP_DIR}/.server ] && [ -f ${SNOOP_DIR}/.DeviceName ] && [ -f ${SNOOP_DIR}/.DeviceLoc ]
     then
         SERVER=`cat ${SNOOP_DIR}/.server`

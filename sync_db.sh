@@ -2,7 +2,7 @@
 # This script puts the wireless interface in managed mode,
 #   connects to the WiFi network, transfers the logfile to the remote server
 
-SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 cd $SNOOP_DIR;
 
 USER="snoopy"
