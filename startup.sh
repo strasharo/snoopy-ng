@@ -3,16 +3,16 @@
 # Run with
 #   nohup bash startup.sh &
 
-SNOOP_DIR=$(cat /etc/SNOOP_DIR.conf)
+SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 
 mkdir -p /tmp/Snoopy/
 
 NOW="date +%k%M"
 
 if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
-    # sudo at 1:45 PM  -f "${SNOOP_DIR}/backup.sh" &
-    # sudo at 7 PM     -f "${SNOOP_DIR}/backup.sh" &
-    sudo at 10 PM    -f "${SNOOP_DIR}/suspend.sh" &
+    # sudo at 1:45 PM -f "${SNOOP_DIR}/backup.sh" &
+    # sudo at 7 PM    -f "${SNOOP_DIR}/backup.sh" &
+    sudo at 10pm    -f "${SNOOP_DIR}/suspend.sh" &
 
     sudo bash "${SNOOP_DIR}/monitor_mode.sh" >  /dev/null &
 
