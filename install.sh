@@ -251,7 +251,7 @@ echo none > /sys/class/leds/led0/trigger
 
 echo
 echo "[+] Done!"
-echo "[I] Remember to configure your ssh for passwordless authentication and to place the name of your server in:"
+echo "[I] Remember to configure your ssh for passwordless authentication, properly set up your ssh config file, and to place the name of your server in:"
 echo -e "\t ${PWD}/.server"
 echo "[I] You can run snoopy by running:"
 echo -e "\t ${PWD}/startup.sh"
