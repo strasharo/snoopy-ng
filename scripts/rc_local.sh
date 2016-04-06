@@ -8,7 +8,7 @@ cd $SNOOP_DIR;
 sleep 5 m
 
 # Disable networking daemon
-sudo /etc/init.d/networking stop
+/etc/init.d/networking stop
 
 # Runs Snoopy:
 bash $SNOOP_DIR/startup.sh
