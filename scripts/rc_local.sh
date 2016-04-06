@@ -7,6 +7,9 @@ cd $SNOOP_DIR;
 # Give ntp a chance to set time (via ethernet)
 sleep 5 m
 
+# Disable networking daemon
+sudo /etc/init.d/networking stop
+
 # Runs Snoopy:
 bash $SNOOP_DIR/startup.sh
 
