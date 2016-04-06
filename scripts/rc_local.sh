@@ -1,6 +1,3 @@
-SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
-cd $SNOOP_DIR;
-
 # Disables the HDMI interface:
 /usr/bin/tvservice -o
 
@@ -11,5 +8,4 @@ sleep 5 m
 /etc/init.d/networking stop
 
 # Runs Snoopy:
-bash $SNOOP_DIR/startup.sh
-
+bash "$(cat /etc/SNOOP_DIR.conf)"/startup.sh
