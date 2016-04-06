@@ -25,7 +25,7 @@ DEV_NAME=$(cat "$SNOOP_DIR/.DeviceName");
 DEV_LOC=$(cat "$SNOOP_DIR/.DeviceLoc");
 DEV_KEY=$(cat "$SNOOP_DIR/.DeviceKey");
 
-IFACE=$(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep mon);
+IFACE=$(ifconfig -a | sed 's/[ \t ].*//;/^$/d' | grep mon);
 sudo rm /tmp/Snoopy/*
 
 if [ ! -f "./.WigleUser" ] || [ ! -f "./.WiglePass" ] || [ ! -f "./.WigleEmail" ]; then

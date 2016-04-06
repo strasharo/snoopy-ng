@@ -4,8 +4,8 @@ cd $SNOOP_DIR;
 # Disables the HDMI interface:
 /usr/bin/tvservice -o
 
-# Get current time with NTP:
-bash $SNOOP_DIR/NTP-Sync.sh
+# Give ntp a chance to set time (via ethernet)
+sleep 5 m
 
 # Runs Snoopy:
 bash $SNOOP_DIR/startup.sh

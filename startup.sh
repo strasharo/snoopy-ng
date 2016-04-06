@@ -10,7 +10,7 @@ mkdir -p /tmp/Snoopy/
 NOW="date +%k%M"
 
 if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
-    sudo at 10pm    -f "${SNOOP_DIR}/suspend.sh" &
+    at 10pm    -f "${SNOOP_DIR}/suspend.sh" &
 
     sudo bash "${SNOOP_DIR}/monitor_mode.sh" >  /dev/null &
 

@@ -36,8 +36,7 @@ if [ -f "$DATABASE" ]; then
     ext="${filename##*.}";
     filename="${filename%.*}";
 
-    mkdir -p "${SNOOP_DIR}/OldDBs"
-    DATABASE="OldDBs/${filename}_${NOW}.${ext}";
+    DATABASE="${filename}_${NOW}.${ext}";
     mv "${SNOOP_DIR}/snoopy.db" "${SNOOP_DIR}/$DATABASE"
 
     sudo rm -f /tmp/Snoopy/*
