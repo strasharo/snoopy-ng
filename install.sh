@@ -138,11 +138,11 @@ else
    /etc/init.d/ntp stop
 fi
 echo "[+] Setting time with ntp"
-ntpdate ntp.ubuntu.com
+ntpdate bg.pool.ntp.org
 /etc/init.d/ntp start
 
 echo "[+] Setting timzeone..."
-echo "America/New_York" > /etc/timezone
+echo "Europe/Sofia" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 echo "[+] Installing sakis3g..."
 cp ./includes/sakis3g /usr/local/bin
