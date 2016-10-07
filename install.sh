@@ -48,11 +48,11 @@ fi
 
 if [ ! -f "./.supplicant.conf" ]; then
     read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
-    read -r -p  "[?] What your identity for the network? " UNAME
+    #read -r -p  "[?] What your identity for the network? " UNAME
     read -r -p -s "[?] What is the PSK to use for the network? " PSK
 
-    PSK=$(echo -n "$PSK" | iconv -t utf16le | openssl md4);
-    PSK=$(echo $PSK|cut -d ' ' -f 2)
+    #PSK=$(echo -n "$PSK" | iconv -t utf16le | openssl md4);
+    #PSK=$(echo $PSK|cut -d ' ' -f 2)
 
     WPASUP="
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -60,16 +60,7 @@ update_config=1
 
 network={
     ssid=\"${SSID}\"
-    priority=1
-    proto=RSN
-    key_mgmt=WPA-EAP
-    pairwise=CCMP
-    auth_alg=OPEN
-    eap=PEAP
-    identity=\"${UNAME}\"
-    password=hash:${PSK}
-    phase1=\"peaplabel=0\"
-    phase2=\"auth=MSCHAPV2\"
+    password=${PSK}
 }"
 
   echo "$WPASUP" > "/etc/wpa_supplicant/wpa_supplicant.conf"
@@ -150,7 +141,7 @@ cp ./includes/sakis3g /usr/local/bin
 # Packages
 echo "[+] Installing required packages..."
 apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump dnsutils\
-  python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy
+  python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy git-core
 # apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at  \
   # tcpdump python-serial sqlite3 python-requests iw build-essential python-flask python-dateutil python-dev libxml2-dev libxslt-dev pyrit
 
@@ -208,7 +199,7 @@ then
   echo "[+] Installing required packages..."
   apt-get install --force-yes --yes subversion libssl-dev libnl-genl-3-dev ethtool pkg-config rfkill
   echo "[+] Downloading aircrack-ng..."
-  svn co http://svn.aircrack-ng.org/trunk/ aircrack-ng
+  git clone https://github.com/aircrack-ng/aircrack-ng.git
   cd aircrack-ng
   echo "[-] Making aircrack-ng"
   make
