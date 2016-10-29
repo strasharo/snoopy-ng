@@ -118,14 +118,14 @@ rm -f /etc/transforms
 echo "[+] Updating repository..."
 apt-get update
 
-apt-get install --force-yes --yes ntpdate
+apt-get --force-yes --yes install ntpdate
 
 #if ps aux | grep ntp | grep -qv grep; then
 if [ -f /etc/init.d/ntp ]; then
    /etc/init.d/ntp stop
 else
    # Needed for Kali Linux build on Raspberry Pi
-   apt-get install ntp
+   apt-get --force-yes --yes install ntp
    /etc/init.d/ntp stop
 fi
 echo "[+] Setting time with ntp"
@@ -140,7 +140,7 @@ cp ./includes/sakis3g /usr/local/bin
 
 # Packages
 echo "[+] Installing required packages..."
-apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump dnsutils\
+apt-get --force-yes --yes install python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at tcpdump dnsutils\
   python-serial sqlite3 python-requests iw build-essential python-bluez python-flask python-gps python-dateutil python-dev libxml2-dev libxslt-dev pyrit mitmproxy git-core
 # apt-get install --force-yes --yes python-pip python-libpcap python-setuptools autossh python-psutil python2.7-dev libpcap0.8-dev ppp at  \
   # tcpdump python-serial sqlite3 python-requests iw build-essential python-flask python-dateutil python-dev libxml2-dev libxslt-dev pyrit
