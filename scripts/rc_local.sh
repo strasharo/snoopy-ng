@@ -1,5 +1,5 @@
 # Disables the HDMI interface:
-/usr/bin/tvservice -o
+#/usr/bin/tvservice -o
 
 # Give ntp a chance to set time (via ethernet)
 sleep 5m

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from libmproxy import proxy, flow, platform
+from mitmproxy import proxy, flow, platform
 import datetime
 import json
 from threading import Thread
