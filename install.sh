@@ -236,10 +236,10 @@ echo -e "\nexit 0" >> /etc/rc.local
 # # Disable networking daemon
 # update-rc.d networking remove
 
-echo "[+] Diabling LEDs."
-chmod -R 777 /sys/class/leds/led0
-echo 1 > /sys/class/leds/led0/brightness
-echo none > /sys/class/leds/led0/trigger
+#echo "[+] Diabling LEDs."
+#chmod -R 777 /sys/class/leds/led0
+#echo 1 | tee /sys/class/leds/led0/brightness
+#echo none | tee /sys/class/leds/led0/trigger
 
 echo
 echo "[+] Done!"
@@ -252,7 +252,4 @@ echo "[I] Ensure you set your ./transforms/db_path.conf path correctly when usin
 
 cd $RET_DIR
 
-# NOTE:
-#   This is only intended for use in part of a class project.
-#   Please ccomment out the following line unless you are are already intricately familiar with this software and its liscencing policies:
 echo "Accepted" > ${SNOOP_DIR}/.acceptedlicense
