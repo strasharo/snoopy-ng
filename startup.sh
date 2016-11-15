@@ -9,8 +9,8 @@ mkdir -p /tmp/Snoopy/
 
 NOW="date +%k%M"
 
-if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
-    at 10pm    -f "${SNOOP_DIR}/suspend.sh" &
+#if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
+#    at 10pm    -f "${SNOOP_DIR}/suspend.sh" &
 
     sudo bash "${SNOOP_DIR}/monitor_mode.sh" >  /dev/null &
 
@@ -18,7 +18,7 @@ if [[ $(eval "$NOW") -le "2200" ]] && [[ "$(eval "$NOW")" -gt "730" ]]; then
     sleep 15;
 
     sudo bash "${SNOOP_DIR}/start_snooping.sh" > /dev/null &
-else
-    sudo bash "${SNOOP_DIR}/suspend.sh"
-fi
+#else
+#    sudo bash "${SNOOP_DIR}/suspend.sh"
+#fi
 

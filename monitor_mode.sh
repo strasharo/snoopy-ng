@@ -4,7 +4,7 @@
 GET_IFACES="ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep";
 
 # Disable any existing WiFi connections (WPA_Supplicant, etc)
-sudo killall wpa_supplicant
+#sudo killall wpa_supplicant
 sudo ifdown $(eval "${GET_IFACES} wlan");
 
 # Stop any existing interfaces (as a precaution)
@@ -14,7 +14,7 @@ if ! [ -z "$IFACE" ]; then
 fi
 
 IFACE=$(eval "${GET_IFACES} wlan");
-sudo airmon-ng check kill;
+#sudo airmon-ng check kill;
 sudo airmon-ng start $IFACE;
 
 IFACE=$(eval "${GET_IFACES} mon");

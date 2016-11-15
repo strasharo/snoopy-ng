@@ -5,5 +5,5 @@
 ifup $(ifconfig -a | sed 's/[ \t].*//;/^$/d' | grep wlan);
 
 echo "[+] Setting time with ntp"
-ntpdate ntp.ubuntu.com
+ntpdate bg.pool.ntp.org
 /etc/init.d/ntp start
