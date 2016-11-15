@@ -46,9 +46,9 @@ if [ ! -f "./.DeviceLoc" ]; then
     echo "${loc:=test}" > "$SNOOP_DIR/.DeviceLoc"
 fi
 
-if [ ! -f "./.supplicant.conf" ]; then
+if [ -f "./.supplicant.conf" ]; then
     read -r -p  "[?] What is the SSID of the WiFi network to use for syncing? " SSID
-    #read -r -p  "[?] What your identity for the network? " UNAME
+#    #read -r -p  "[?] What your identity for the network? " UNAME
     read -r -p -s "[?] What is the PSK to use for the network? " PSK
 
     #PSK=$(echo -n "$PSK" | iconv -t utf16le | openssl md4);
