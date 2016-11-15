@@ -4,7 +4,7 @@
 SNOOP_DIR="$(cat /etc/SNOOP_DIR.conf)"
 cd $SNOOP_DIR;
 
-sudo at 8am -f "${SNOOP_DIR}/startup.sh"
+#sudo at 8am -f "${SNOOP_DIR}/startup.sh"
 
 DATABASE="${SNOOP_DIR}/snoopy.db"
 
